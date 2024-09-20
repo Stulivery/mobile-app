@@ -57,8 +57,6 @@ export const CustomTextInput = ({
 }) => {
   const [showicon, seticon] = useState(true); // Initially, show the icon
   const [inputValue, setInputValue] = useState(value); // Track the input value
-  
-
   return (
     <>
       <View className="w-full relative flex justify-center">
@@ -249,3 +247,45 @@ export const Iconplaceholder=({backgroundColor,width,height,Icon})=>{
     </View>
   )
 }
+
+
+
+
+
+
+export const CustomInputWithHeader = ({
+  headerText, // This is the input header text
+  normalText, // Text inside the input field
+  autoCapitalize,
+  onChange,
+  secureTextEntry,
+  disable,
+  value
+}) => {
+  const [inputValue, setInputValue] = useState(value); // Track the input value
+
+  return (
+    <View className="w-full flex flex-col">
+      {/* Input Header */}
+      <Text className=" mb-2"style={[Textstyles.text_cmedium]}>{headerText}</Text>
+      
+      {/* Input Field */}
+      <View className="relative flex justify-center">
+        <TextInput
+           style={[
+            customstyle.textinputstyle, 
+            { paddingLeft: 15 }  // Reduce the left padding here
+          ]} // Apply custom styling
+          value={inputValue || normalText} // Display the normalText if no value
+          editable={false}
+          secureTextEntry={secureTextEntry}
+          autoCapitalize={autoCapitalize || "none"}
+          onChangeText={(text) => {
+            setInputValue(text); // Update input value state
+            onChange(text); // Call the parent onChange handler if provided
+          }}
+        />
+      </View>
+    </View>
+  );
+};

@@ -34,7 +34,7 @@ const Neworder = () => {
       setCurrentStep((prevStep) => prevStep + 1);
     } else if (currentStep === 3) {
       setShowDrawer(true);
-      translateY.value = withSpring(0); 
+      translateY.value = withSpring(0);
     }
   };
 
@@ -86,7 +86,7 @@ const Neworder = () => {
         />
         <ScrollView>
           <View className="w-full px-5">
-            <View className="h-8" />
+            <View className="h-3" />
             <Text className="w-64" style={[Textstyles.text_small]}>
               Create a new delivery request and get it delivered!
             </Text>
