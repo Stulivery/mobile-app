@@ -43,20 +43,12 @@ export default function App() {
                 component={StackWrapper}
               />
               <Stack.Screen
-                name="order"
-                component={Order}
-              />
-              <Stack.Screen
                 name="dashboardscreen"
                 component={Dashboard}
               />
               <Stack.Screen
                 name="verification"
                 component={VerificationFlowStack}
-              />
-               <Stack.Screen
-                name="neworder"
-                component={Neworder}
               />
             </Stack.Navigator>
           </NavigationContainer>

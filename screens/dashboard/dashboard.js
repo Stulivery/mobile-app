@@ -357,7 +357,9 @@ const Dashboard = () => {
         </View>
       </View>
 
-      <Footer />
+      <Footer 
+      active={'Home'}
+      />
     </>
   );
 };
