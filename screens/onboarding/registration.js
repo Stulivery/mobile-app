@@ -88,6 +88,7 @@ export default function Registration() {
         }
     };
     const handleContinueBackwards = () => {
+        console.log('ok')
         if (currentStep > 0) {
             setCurrentStep((prevStep) => prevStep - 1);
         }
@@ -121,6 +122,7 @@ export default function Registration() {
                     </View>
                 </>
             )}
+            
             <View style={{ height: height }} className={`w-full px-5 py-[88px]`}>
                 <View>
                     <View>
@@ -139,7 +141,7 @@ export default function Registration() {
                         {currentStep > 0 && (
                             <TouchableOpacity
                                 onPress={handleContinueBackwards}
-                                className="flex flex-row items-center"
+                                className="flex flex-row items-center relative z-50"
                             >
                                 <MaterialIcons
                                     name="keyboard-backspace"
@@ -193,10 +195,13 @@ export default function Registration() {
                             </>
                         )}
                         {currentStep === 1 && (
-                            <EmailVerification
+                            <View>
+                                   <EmailVerification
                                 errorMsg={errorMsg}
                                 setErrorMsg={setErrorMsg}
                             />
+                                </View>
+                         
                         )}
                         {currentStep === 2 && (
                             <>
@@ -457,7 +462,7 @@ const EmailVerification = ({
 
     return (
         <>
-            <View className="absolute -bottom-5 -left-5 z-50 items-center">
+            <View className="absolute  -left-5 z-50 items-center">
                 <Animated.View className="w-full" style={[animatedStyles]}>
                     <NumericKeyboard onPress={(value) => handlePickValue(value)} />
                 </Animated.View>

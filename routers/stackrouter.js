@@ -14,7 +14,7 @@ import Registration from "../screens/onboarding/registration";
 import { Platform } from "react-native";
 import Dashboard from "../screens/dashboard/dashboard";
 import Order from "../screens/dashboard/order";
-import Profile from "../screens/dashboard/Profile";
+import Profile from "../screens/Profile/Profile";
 import VerificationFlowStack from "../screens/verification/verification-stack";
 import PaymentScreen from "../screens/TransactionPage/depositScreen";
 

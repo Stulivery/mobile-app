@@ -13,7 +13,6 @@ import * as SplashScreen from "expo-splash-screen";
 import Order from "./screens/dashboard/order";
 import Dashboard from "./screens/dashboard/dashboard";
 import VerificationFlowStack from "./screens/verification/verification-stack";
-import Neworder from "./screens/dashboard/neworder";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -42,22 +41,7 @@ export default function App() {
                 name="onboarding"
                 component={StackWrapper}
               />
-              <Stack.Screen
-                name="order"
-                component={Order}
-              />
-              <Stack.Screen
-                name="dashboardscreen"
-                component={Dashboard}
-              />
-              <Stack.Screen
-                name="verification"
-                component={VerificationFlowStack}
-              />
-               <Stack.Screen
-                name="neworder"
-                component={Neworder}
-              />
+             
             </Stack.Navigator>
           </NavigationContainer>
         </GestureHandlerRootView>

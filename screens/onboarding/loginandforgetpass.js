@@ -217,14 +217,15 @@ export const Forgotpass = () => {
 };
 export const Otpverify = () => {
   const email = "yomzeew@gmail.com";
-  const [showkeyboard, setshowkeyboard] = useState(false);
+  const [showkeyboard, setshowkeyboard] = useState(true);
   const [otpArray, setotpArray] = useState(["", "", "", ""]); // OTP array for 4 digits
   const [errorMsg, seterrorMsg] = useState("");
   const navigation = useNavigation();
 
   const handleshowkeys = () => {
-    setshowkeyboard((prevState) => !prevState);
+    setshowkeyboard((prevState) => !prevState)
     translateY.value = showkeyboard ? withSpring(0) : withSpring(300);
+    console.log('ok')
   };
 
   const translateY = useSharedValue(300);
@@ -279,7 +280,7 @@ export const Otpverify = () => {
           <NumericKeyboard onPress={(value) => handlepickvalue(value)} />
         </Animated.View>
       </View>
-      <View className="h-screen w-full px-5 py-[88px]">
+      <View className="relative z-50 h-screen w-full px-5 py-[88px]">
         <View className="h-2/3 flex">
           <Image
             className="h-12 w-12"
