@@ -1,6 +1,6 @@
-import { height, width } from "../../constants/mobileDimensions";
+import { height, width } from "../../../constants/mobileDimensions";
 import { View, Text, TouchableOpacity } from "react-native";
-import { Textstyles } from "../../constants/fontsize";
+import { Textstyles } from "../../../constants/fontsize";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import Animated, {
@@ -8,7 +8,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { greycolorfive, primarycolor, whitecolor } from "../../constants/color";
+import { greycolorfive, primarycolor, whitecolor } from "../../../constants/color";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import MapView, { Marker, Polyline } from "react-native-maps";
 
