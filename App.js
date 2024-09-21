@@ -2,7 +2,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import "react-native-gesture-handler";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, StyleSheet, Text, View,Platform } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+} from "react-native";
 import { PaperProvider } from "react-native-paper";
 import StackWrapper from "./routers/stackrouter";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -12,7 +18,12 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import Dashboard from "./screens/dashboard/dashboard";
 import VerificationFlowStack from "./screens/verification/verification-stack";
-
+import Neworder from "./screens/dashboard/neworder";
+import OrderDetails from "./screens/delivery/orderdetails";
+import Trackorder from "./screens/dashboard/trackorder";
+import Editprofile from "./screens/Profile/editprofile";
+import DeliveryDash from "./screens/delivery/deliverydash";
+import Nearby from "./screens/delivery/neardelivery";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -37,18 +48,18 @@ export default function App() {
           <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
               {/* <Stack.Screen  name="start" component={Home} /> */}
-              <Stack.Screen
-                name="onboarding"
-                component={StackWrapper}
-              />
-              <Stack.Screen
-                name="dashboardscreen"
-                component={Dashboard}
-              />
+              <Stack.Screen name="onboarding" component={StackWrapper} />
+              <Stack.Screen name="dashboardscreen" component={Dashboard} />
               <Stack.Screen
                 name="verification"
                 component={VerificationFlowStack}
               />
+              <Stack.Screen name="neworder" component={Neworder} />
+              <Stack.Screen name="orderdetails" component={OrderDetails} />
+              <Stack.Screen name="trackorder" component={Trackorder} />
+              <Stack.Screen name="editprofile" component={Editprofile} />
+              <Stack.Screen name="deliverydash" component={DeliveryDash} />
+              <Stack.Screen name="neardelivery" component={Nearby} />
             </Stack.Navigator>
           </NavigationContainer>
         </GestureHandlerRootView>
@@ -65,4 +76,3 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-

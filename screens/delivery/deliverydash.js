@@ -29,21 +29,17 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
 import { CustomButton, Iconplaceholder } from "../mycomponents/mycomponent";
 import { FontAwesome5 } from "@expo/vector-icons";
-import Footer from "./footer";
+import Footer from "../dashboard/footer";
 import { useNavigation } from "@react-navigation/native";
 import RecentOrderRecord from "../mycomponents/recentOrderRecord";
 
-const Dashboard = () => {
+const DeliveryDash = () => {
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [kycverify, setkycverify] = useState(false);
 
   const handleTrack = () => {
-    navigation.navigate("trackorder");
-  };
-
-  const handleorder = () => {
-    navigation.navigate("neworder");
+    navigation.navigate("");
   };
 
   const fetchData = async () => {
@@ -52,14 +48,6 @@ const Dashboard = () => {
       setkycverify(true);
     } catch (error) {}
   };
-  const checkstatus = () => {
-    if (kycverify === false) {
-      navigation.navigate("verification");
-    }
-  };
-  useEffect(() => {
-    checkstatus();
-  }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -84,7 +72,7 @@ const Dashboard = () => {
           <View className="w-3" />
           <View className="items-start">
             <Text style={[Textstyles.text_x16small]}>Welcome back</Text>
-            <Text style={[Textstyles.text_x16small]}>John</Text>
+            <Text style={[Textstyles.text_x16small]}>Kemi</Text>
           </View>
         </View>
         <View className="h-5" />
@@ -152,7 +140,6 @@ const Dashboard = () => {
             </View>
             <View className="flex-row">
               <TouchableOpacity
-                onPress={handleorder}
                 className="p-3"
                 style={{
                   backgroundColor: redopacitycolor,
@@ -178,7 +165,7 @@ const Dashboard = () => {
                 <View className="flex-row w-full justify-between items-end">
                   <View className="w-2/3">
                     <Text style={[Textstyles.text_xsma]}>
-                      Create a New Delivery Request and get it Moving
+                      Manage and keep track of your delivery history
                     </Text>
                   </View>
                 </View>
@@ -211,14 +198,14 @@ const Dashboard = () => {
                   <View className="h-3" />
 
                   <Text style={[Textstyles.text_small, { color: greencolor }]}>
-                    Track Order
+                    Near pickup
                   </Text>
                 </View>
 
                 <View className="flex-row w-full justify-between items-end">
                   <View className="w-2/3">
                     <Text style={[Textstyles.text_xsma]}>
-                      Your Delivery is on the Way! Track Progress
+                      Choose a delivery near you get started
                     </Text>
                   </View>
                 </View>
@@ -359,10 +346,8 @@ const Dashboard = () => {
         </View>
       </View>
 
-      <Footer 
-      active={'Home'}
-      />
+      <Footer active={"Home"} />
     </>
   );
 };
-export default Dashboard;
+export default DeliveryDash;

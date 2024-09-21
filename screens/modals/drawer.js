@@ -5,13 +5,24 @@ import {
   primarycolortwo,
   whitecolor,
 } from "../../constants/color";
+import { CustomTextInput } from "../mycomponents/mycomponent";
 import { useState } from "react";
-import { Image, Text, View, TouchableOpacity ,TouchableWithoutFeedback } from "react-native";
+import {
+  Image,
+  Text,
+  View,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { Textstyles } from "../../constants/fontsize";
 import { CustomButton } from "../mycomponents/mycomponent";
 import { Avatar } from "react-native-paper";
 import { IconButton } from "react-native-paper";
-import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  FontAwesome,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { RadioButton } from "react-native-paper";
 import { Feather } from "@expo/vector-icons"; // Importing Feather icons
 
@@ -135,7 +146,11 @@ export const MapDrawer = ({ navigateTo, buttonText, text, title }) => {
             </View>
             <View>
               <View className=" flex-row items-center mb-4">
-              <FontAwesome name="dot-circle-o" size={20} color={primarycolor} />
+                <FontAwesome
+                  name="dot-circle-o"
+                  size={20}
+                  color={primarycolor}
+                />
                 <Text className=" ml-4">Hall 1 Uniben</Text>
               </View>
               <View className=" flex-row items-center ">
@@ -157,11 +172,96 @@ export const MapDrawer = ({ navigateTo, buttonText, text, title }) => {
   );
 };
 
+export const Nearlocation = ({ navigateTo, buttonText, text, title }) => {
+  const handlePress = () => {
+    console.log("to " + navigateTo);
+  };
 
-export const PaymentDrawer = ({ navigateTo, buttonText, text, title, onClose }) => {
+  return (
+    <View className="w-screen h-screen">
+      <View className="absolute  top-[14.5vh] w-full px-6 py-0 rounded-t-[24px] h-1/2 shadow-lg bg-white">
+        <View className=" mt-5">
+          <CustomTextInput
+            placeholder={"Search"}
+            placeholderTextColor={greycolortwo}
+            sideicon={
+              <Feather name="magnify" size={20} color={primarycolortwo} />
+            }
+          />
+        </View>
+        {/* Delivery options */}
+        <View className="bg-white flex-1 mt-4">
+          <TouchableOpacity className="flex-row items-center justify-between py-4 border-b border-gray-200">
+            <View className=" w-10 h-10 bg-gray-200 rounded-xl flex justify-center items-center">
+              <MaterialCommunityIcons
+                color="grey"
+                name="map-marker"
+                size={28}
+              />
+            </View>
+            <View className="flex-1 ml-3 -mt-1">
+              <Text style={[Textstyles.text_xxmedium]}>Hall 1 Uniben</Text>
+              <Text className="text-xs -mt-1 text-gray-600">
+                Delivery to Lecture theater 1
+              </Text>
+            </View>
+            <Text className="text-primarycolor text-sm">5 mins away</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity className="flex-row items-center justify-between py-4 border-b border-gray-200">
+            <View className=" w-10 h-10 bg-gray-200 rounded-xl flex justify-center items-center">
+              <MaterialCommunityIcons
+                name="map-marker"
+                color="grey"
+                size={28}
+              />
+            </View>
+            <View className="flex-1 ml-3 -mt-1">
+              <Text style={[Textstyles.text_xxmedium]}>Hall 1 Uniben</Text>
+              <Text className="text-xs -mt-1 text-gray-600">
+                Delivery to Lecture theater 1
+              </Text>
+            </View>
+            <Text className="text-primarycolor text-sm">5 mins away</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity className="flex-row items-center justify-between py-4 border-b border-gray-200">
+            <View className=" w-10 h-10 bg-gray-200 rounded-xl flex justify-center items-center">
+              <MaterialCommunityIcons
+                color="grey"
+                name="map-marker"
+                size={28}
+              />
+            </View>
+            <View className="flex-1 ml-3 -mt-1">
+              <Text style={[Textstyles.text_xxmedium]}>Hall 1 Uniben</Text>
+              <Text className=" text-xs -mt-1 text-gray-600">
+                Delivery to Lecture theater 1
+              </Text>
+            </View>
+            <Text className="text-primarycolor text-sm">5 mins away</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Bottom draggable bar */}
+        <View className="w-full absolute bottom-0">
+          <View className="w-[134px] h-[5px] rounded-full bg-black mx-auto" />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export const PaymentDrawer = ({
+  navigateTo,
+  buttonText,
+  text,
+  title,
+  onClose,
+}) => {
   const [checked, setChecked] = useState("wallet"); // To handle payment option selection
   const navigation = useNavigation();
-  
+
   const handlePress = () => {
     console.log("to " + navigateTo);
     navigation.navigate(navigateTo);
@@ -170,14 +270,19 @@ export const PaymentDrawer = ({ navigateTo, buttonText, text, title, onClose }) 
   return (
     <View className="w-screen h-screen">
       <TouchableWithoutFeedback onPress={onClose}>
-        <View className="absolute top-0 left-0 right-0 bottom-0" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} />
+        <View
+          className="absolute top-0 left-0 right-0 bottom-0"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        />
       </TouchableWithoutFeedback>
       <View
         style={{ backgroundColor: whitecolor }}
         className="absolute top-[14.5vh] w-full px-6 py-0 rounded-t-[24px] h-[80%] shadow-lg"
       >
         <View className="flex-row justify-between items-center mt-16">
-          <Text style={[Textstyles.text_cmedium, { color: primarycolortwo }]}>{title}</Text>
+          <Text style={[Textstyles.text_cmedium, { color: primarycolortwo }]}>
+            {title}
+          </Text>
           <TouchableOpacity onPress={onClose}>
             <Feather name="x" size={24} color="black" />
           </TouchableOpacity>
@@ -286,4 +391,3 @@ export const PaymentDrawer = ({ navigateTo, buttonText, text, title, onClose }) 
     </View>
   );
 };
-

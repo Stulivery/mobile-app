@@ -8,7 +8,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { MapDrawer } from "../modals/drawer";
+import { MapDrawer, Nearlocation } from "../modals/drawer";
 import { Header } from "../mycomponents/verification";
 import { greycolorfive, primarycolor, whitecolor } from "../../constants/color";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
@@ -42,23 +42,23 @@ const generateZigzagPointsWithRoots = (start, end, numberOfPoints = 10) => {
   return points;
 };
 
-const Order = () => {
+const Nearby = () => {
   const [location, setLocation] = useState(null);
-  const [randomLocation, setRandomLocation] = useState(null);
-  const [currentStep, setCurrentStep] = useState(0); // 0, 1, 2 for step progress
+  const [randomLocations, setRandomLocations] = useState([]); // Store multiple random locations
+  const [currentStep, setCurrentStep] = useState(0);
   const [showDrawer, setShowDrawer] = useState(false);
 
-  // Helper to get a farther random location
-  const getFartherRandomLocation = (location) => {
-    const latOffset = (Math.random() - 0.5) * 0.2; // Increase offset range for latitude
-    const lonOffset = (Math.random() - 0.5) * 0.2; // Increase offset range for longitude
+  // Helper to get random locations close to the user's main location
+  const getCloseRandomLocation = (location) => {
+    const latOffset = (Math.random() - 0.5) * 0.01; // Smaller range for latitude
+    const lonOffset = (Math.random() - 0.5) * 0.01; // Smaller range for longitude
     return {
       latitude: location.latitude + latOffset,
       longitude: location.longitude + lonOffset,
     };
   };
 
-  // Fetch user location
+  // Fetch user location and generate random nearby locations
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -71,17 +71,19 @@ const Order = () => {
       if (loc && loc.coords) {
         setLocation(loc.coords);
 
-        // Set random location farther from current location
-        const randomLoc = getFartherRandomLocation(loc.coords);
-        setRandomLocation(randomLoc);
+        // Generate three random nearby locations
+        const randomLocs = Array.from({ length: 3 }, () =>
+          getCloseRandomLocation(loc.coords)
+        );
+        setRandomLocations(randomLocs);
 
         console.log("User Location: ", loc.coords);
-        console.log("Random Location: ", randomLoc);
+        console.log("Random Locations: ", randomLocs);
       }
     })();
   }, []);
 
-  // Function to handle step continuation and showing the drawer
+  // Handle step continuation and showing the drawer
   const handleContinue = () => {
     if (currentStep < 2) {
       setCurrentStep((prevStep) => prevStep + 1);
@@ -114,18 +116,13 @@ const Order = () => {
           />
           {/* MapDrawer Component with Close Button */}
           <View style={{ zIndex: 12000 }} className="bottom-0 absolute">
-            <Animated.View style={[animatedStyles]}>
-              <MapDrawer
-                title="Successful"
-                text={
-                  <Text>
-                    Your <Text style={{ color: primarycolor }}>stulivery</Text>{" "}
-                    account has been registered successfully
-                  </Text>
-                }
-                buttonText="Go to dashboard"
-                navigateTo="dashboard"
-              />
+            <Animated.View
+              style={[
+                animatedStyles,
+                { height: 750 }, // Adjust height as needed
+              ]}
+            >
+              <Nearlocation />
 
               {/* Close Button */}
               <TouchableOpacity
@@ -148,14 +145,14 @@ const Order = () => {
         <Header
           title={
             <Text className="" style={[Textstyles.text_cmedium]}>
-              Order Location
+              Near Delivery
             </Text>
           }
         />
 
         <View className="px-2 mt-1">
           {/* Ensure location is available */}
-          {location && randomLocation ? (
+          {location && randomLocations.length > 0 ? (
             <MapView
               className="w-[100%] h-full"
               initialRegion={{
@@ -175,22 +172,22 @@ const Order = () => {
                 <CustomMarker icon="map-marker" color="white" />
               </Marker>
 
-              {/* Marker for Farther Random Location */}
-              <Marker
-                coordinate={randomLocation}
-                title="Farther Location"
-                description="Random location generated farther away"
-                onPress={handleContinue} // Move to the next step when pressed
-              >
-                <CustomMarker icon="send-circle-outline" color="white" />
-              </Marker>
+              {/* Render random nearby locations with CustomMarkers */}
+              {randomLocations.map((randomLoc, index) => (
+                <Marker
+                  key={index}
+                  coordinate={randomLoc}
+                  title={`Random Location ${index + 1}`}
+                  description={`Random location ${index + 1}`}
+                  onPress={handleContinue}
+                >
+                  <CustomMarker icon="send-circle-outline" color="white" />
+                </Marker>
+              ))}
 
               {/* Polyline with zigzag pattern */}
               <Polyline
-                coordinates={generateZigzagPointsWithRoots(
-                  location,
-                  randomLocation
-                )}
+                coordinates={[location, ...randomLocations]}
                 strokeColor={primarycolor} // Line color
                 strokeWidth={6} // Line width
               />
@@ -203,8 +200,6 @@ const Order = () => {
     </>
   );
 };
-
-export default Order;
 
 const styles = StyleSheet.create({
   markerContainer: {
@@ -221,3 +216,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default Nearby;
