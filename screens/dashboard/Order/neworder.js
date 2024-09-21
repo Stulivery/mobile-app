@@ -29,6 +29,7 @@ import {
 } from "../../../constants/color";
 import { PaymentDrawer } from "../../modals/drawer";
 import { Feather, FontAwesome } from "@expo/vector-icons";
+import Footer from "../footer";
 
 const Neworder = () => {
   const [currentStep, setCurrentStep] = useState(0); // Step 0, 1, 2, 3
@@ -75,7 +76,7 @@ const Neworder = () => {
           </Animated.View>
         </View>
       )}
-      <View style={{ height: height, width: width }} className="bg-white py-[40px]">
+      <View style={{ height: height, width: width }} className="bg-white px-5 pt-[40px] pb-[88px]">
           <Header
             title={<Text className="" style={[Textstyles.text_cmedium]}>New Order</Text>}
           />
@@ -84,8 +85,10 @@ const Neworder = () => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 20 : 0}
       >
-          <ScrollView className="flex-1">
-            <View className="w-full px-5">
+          <ScrollView
+          showsVerticalScrollIndicator={false}
+           className="flex-1">
+            <View className="w-full ">
               <View className="h-3" />
               <Text className="w-64" style={[Textstyles.text_small]}>
                 Create a new delivery request and get it delivered!
@@ -168,8 +171,7 @@ const Neworder = () => {
               />
               <View className="h-4" />
             </View>
-            <View className="h-8" />
-            <View className="w-full px-5">
+            <View className="w-full">
               <CustomButton
                 backgroundColor={primarycolor}
                 Textname="Create Order"
@@ -180,7 +182,7 @@ const Neworder = () => {
           </ScrollView>
           </KeyboardAvoidingView>
         </View>
-      
+      <Footer/>
     </>
   );
 };

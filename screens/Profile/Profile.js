@@ -19,7 +19,7 @@ const Profile=()=>{
     }
     return(
         <>
-        <View style={{ height: height, width: width }} className="px-5 pt-[50px] flex">
+        <View style={{ height: height, width: width }} className="px-5 pb-[88px] pt-[40px] flex">
             <Header
             title={'Profile'}
             />

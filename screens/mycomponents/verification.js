@@ -23,7 +23,7 @@ export const Header = (props) => {
       <View className="w-full h-16 justify-center">
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          className="absolute left-0 bg-gray-200 ml-3 w-[50px] h-[50px] rounded-full mt-auto mb-auto  flex justify-center items-center"
+          className="absolute left-0 bg-gray-200  w-[50px] h-[50px] rounded-full mt-auto mb-auto  flex justify-center items-center"
         >
           <MaterialCommunityIcons name="arrow-left" size={20} color="black" />
         </TouchableOpacity>

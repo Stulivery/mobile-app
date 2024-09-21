@@ -8,10 +8,10 @@ import {
   greycolorfour,
   iconplaceholder,
   primarycolortwo,
-} from "../../constants/color";
+} from "../../../constants/color";
 import { Svg } from "react-native-svg";
-import { DeliveryBoxIcon } from "../../utilities/Svgfiles";
-import { Textstyles } from "../../constants/fontsize";
+import { DeliveryBoxIcon } from "../../../utilities/Svgfiles";
+import { Textstyles } from "../../../constants/fontsize";
 
 const RecentOrderRecord = ({ ordernumber, orderstatus, ordertime, index }) => {
   return (

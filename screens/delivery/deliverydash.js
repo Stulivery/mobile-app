@@ -31,7 +31,7 @@ import { CustomButton, Iconplaceholder } from "../mycomponents/mycomponent";
 import { FontAwesome5 } from "@expo/vector-icons";
 import Footer from "../dashboard/footer";
 import { useNavigation } from "@react-navigation/native";
-import RecentOrderRecord from "../mycomponents/recentOrderRecord";
+import RecentOrderRecord from "../dashboard/Order/recentOrderRecord";
 
 const DeliveryDash = () => {
   const navigation = useNavigation();
