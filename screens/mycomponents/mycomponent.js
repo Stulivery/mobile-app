@@ -3,7 +3,7 @@ import { customstyle, radioButtonStyles } from "../../constants/customstyle";
 import { Textstyles } from "../../constants/fontsize";
 import { TextInput } from "react-native-gesture-handler";
 import { useState } from "react";
-import { greycolortwo } from "../../constants/color";
+import { greycolortwo, primarycolor } from "../../constants/color";
 import { height, width } from "../../constants/mobileDimensions";
 
 export const CustomButton = ({
@@ -121,7 +121,8 @@ export const CustomUploadInput = ({
 
       {/* Right Upload Button */}
       <TouchableOpacity
-        className="rounded-xl px-4 py-2 bg-[#FFC107]"
+        style={{ backgroundColor: primarycolor }}
+        className="rounded-xl px-4 py-2"
         onPress={onUploadPress}
       >
         <Text className="text-white font-semibold">{buttonLabel}</Text>
