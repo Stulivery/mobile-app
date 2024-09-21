@@ -13,10 +13,11 @@ import {
 import Registration from "../screens/onboarding/registration";
 import { Platform } from "react-native";
 import Dashboard from "../screens/dashboard/dashboard";
-import Order from "../screens/dashboard/order";
-import Profile from "../screens/dashboard/Profile";
+import Order from "../screens/dashboard/Order/order";
+import Profile from "../screens/Profile/Profile";
 import VerificationFlowStack from "../screens/verification/verification-stack";
 import PaymentScreen from "../screens/TransactionPage/depositScreen";
+import Neworder from "../screens/dashboard/Order/neworder";
 
 const StackWrapper = () => {
   const Stack = createStackNavigator();
@@ -116,6 +117,14 @@ const StackWrapper = () => {
               }}
                 name="order"
                 component={Order}
+              />
+                <Stack.Screen
+               options={{
+                gestureEnabled: true,
+                gestureDirection: Platform.OS === "ios" ? "horizontal" : Platform.OS === "android" && "vertical",
+              }}
+                name="neworder"
+                component={Neworder}
               />
               <Stack.Screen
                options={{
