@@ -23,6 +23,9 @@ const Order=()=>{
         navigation.navigate('neworder')
         
     }
+   const handlenavigate=()=>{
+        navigation.navigate('orderlocation')
+    }
     return(
         <>
         <TouchableOpacity onPress={handlenavigatenext} style={{backgroundColor:primarycolortwo,width:80,height:80}} className="rounded-full absolute bottom-24 right-3 flex justify-center items-center z-50">
@@ -40,7 +43,7 @@ const Order=()=>{
                 >
                     <View style={{width:width}} className="flex-row justify-evenly">
                     {listarray.map((item,index)=>(
-                        <TouchableOpacity onPress={()=>handletype(index)} className="px-4 py-1 rounded-2xl" style={{backgroundColor:currentindex===index?primarycolortwo:whitecolor}}>
+                        <TouchableOpacity key={index} onPress={()=>handletype(index)} className="px-4 py-1 rounded-2xl" style={{backgroundColor:currentindex===index?primarycolortwo:whitecolor}}>
                             <Text style={[Textstyles.text_small,{color:currentindex===index?whitecolor:primarycolortwo}]}>{item}</Text>
                         </TouchableOpacity>
 
@@ -60,6 +63,7 @@ const Order=()=>{
             ordernumber={'STM0892389'}
             orderstatus={'In transit'}
             ordertime={'12 October,2024'}
+            onPress={()=>handlenavigate()}
             />
                <RecentOrderRecord
             index={1}

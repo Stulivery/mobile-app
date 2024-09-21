@@ -39,7 +39,7 @@ const Dashboard = () => {
   const [kycverify, setkycverify] = useState(false);
 
   const handleTrack = () => {
-    navigation.navigate("trackorder");
+    navigation.navigate("Track Order");
   };
 
   const handleorder = () => {

@@ -3,16 +3,14 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Textstyles } from "../../../constants/fontsize";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
 import { MapDrawer } from "../../modals/drawer";
 import { Header } from "../../mycomponents/verification";
-import { greycolorfive, primarycolor, whitecolor } from "../../../constants/color";
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { greycolorfive, primarycolor, primarycolortwo, whitecolor } from "../../../constants/color";
+import { MaterialCommunityIcons, Feather, FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import MapView, { Marker, Polyline } from "react-native-maps";
+import { Avatar } from "react-native-paper";
+import CustomLoader from "../../../preloader/preloader";
+import { CustomButton } from "../../mycomponents/mycomponent";
 
 const CustomMarker = ({ icon, color }) => {
   return (
@@ -42,11 +40,13 @@ const generateZigzagPointsWithRoots = (start, end, numberOfPoints = 10) => {
   return points;
 };
 
-const Order = () => {
+const OrderLocation = () => {
   const [location, setLocation] = useState(null);
   const [randomLocation, setRandomLocation] = useState(null);
   const [currentStep, setCurrentStep] = useState(0); // 0, 1, 2 for step progress
   const [showDrawer, setShowDrawer] = useState(false);
+  const [address,setaddress]=useState('Aule Rd Akure')
+
 
   // Helper to get a farther random location
   const getFartherRandomLocation = (location) => {
@@ -57,6 +57,25 @@ const Order = () => {
       longitude: location.longitude + lonOffset,
     };
   };
+  function getLatLon(address) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+    
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.length > 0) {
+          const { lat, lon } = data[0];
+          console.log(`Latitude: ${lat}, Longitude: ${lon}`);
+        } else {
+          console.log('Location not found');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+  
+  // Example usage
+  getLatLon(address);
+  
 
   // Fetch user location
   useEffect(() => {
@@ -68,6 +87,7 @@ const Order = () => {
       }
 
       let loc = await Location.getCurrentPositionAsync({});
+      console.log(loc)
       if (loc && loc.coords) {
         setLocation(loc.coords);
 
@@ -81,70 +101,14 @@ const Order = () => {
     })();
   }, []);
 
+
   // Function to handle step continuation and showing the drawer
-  const handleContinue = () => {
-    if (currentStep < 2) {
-      setCurrentStep((prevStep) => prevStep + 1);
-    }
-    if (currentStep === 2) {
-      setShowDrawer(true);
-      translateY.value = withSpring(300); // Open drawer animation
-    }
-  };
 
-  // Handle drawer close
-  const handleCloseDrawer = () => {
-    setShowDrawer(false);
-    translateY.value = withSpring(600); // Slide the drawer down when closing
-  };
 
-  const translateY = useSharedValue(600);
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
-  }));
 
   return (
     <>
-      {showDrawer && (
-        <>
-          {/* Background Overlay */}
-          <View
-            style={{ height: height, backgroundColor: greycolorfive }}
-            className="w-full absolute z-50 opacity-70"
-          />
-          {/* MapDrawer Component with Close Button */}
-          <View style={{ zIndex: 12000 }} className="bottom-0 absolute">
-            <Animated.View style={[animatedStyles]}>
-              <MapDrawer
-                title="Successful"
-                text={
-                  <Text>
-                    Your <Text style={{ color: primarycolor }}>stulivery</Text>{" "}
-                    account has been registered successfully
-                  </Text>
-                }
-                buttonText="Go to dashboard"
-                navigateTo="dashboard"
-              />
-
-              {/* Close Button */}
-              <TouchableOpacity
-                style={{
-                  position: "absolute",
-                  top: 70,
-                  right: 10,
-                  zIndex: 13000,
-                }}
-                onPress={handleCloseDrawer}
-              >
-                <Feather name="x-circle" size={24} color={whitecolor} />
-              </TouchableOpacity>
-            </Animated.View>
-          </View>
-        </>
-      )}
-
-      <View style={{ height: height, width: width }} className="py-[40px]">
+      <View style={{ height: height, width: width }} className="bg-white px-3 py-[40px]">
         <Header
           title={
             <Text className="" style={[Textstyles.text_cmedium]}>
@@ -152,27 +116,30 @@ const Order = () => {
             </Text>
           }
         />
-
-        <View className="px-2 mt-1">
+        <View className="px-5 h-1/2 rounded-2xl w-full justify-center items-center bg-white">
           {/* Ensure location is available */}
           {location && randomLocation ? (
             <MapView
-              className="w-[100%] h-full"
+              className="w-[100%] rounded-2xl h-full"
               initialRegion={{
                 latitude: location.latitude,
                 longitude: location.longitude,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
+               
               }}
+            
+              
             >
+             
               {/* Marker for Current Location */}
               <Marker
                 coordinate={location}
                 title="Your Location"
                 description="This is where you are"
-                onPress={handleContinue} // Move to the next step when pressed
+              
               >
-                <CustomMarker icon="map-marker" color="white" />
+                <Avatar.Image size={36} source={require('../../../assets/images/avatermale.png')} />
               </Marker>
 
               {/* Marker for Farther Random Location */}
@@ -180,9 +147,9 @@ const Order = () => {
                 coordinate={randomLocation}
                 title="Farther Location"
                 description="Random location generated farther away"
-                onPress={handleContinue} // Move to the next step when pressed
+                
               >
-                <CustomMarker icon="send-circle-outline" color="white" />
+                <Avatar.Image size={36} source={require('../../../assets/images/avatermale.png')} />
               </Marker>
 
               {/* Polyline with zigzag pattern */}
@@ -196,15 +163,65 @@ const Order = () => {
               />
             </MapView>
           ) : (
-            <Text>Loading map...</Text>
+            <View>
+              <CustomLoader/>
+            </View>
           )}
+        </View>
+        <View className="h-8" />
+        <View className="flex-1  bg-white px-5">
+          <Text style={[Textstyles.text_medium]}>Your Package on The Way</Text>
+          <Text>Arriving at pick up point soon</Text>
+          <View className="flex-row justify-between w-full mt-5">
+            <View className="flex-row items-center">
+              <Avatar.Image size={50} source={require('../../../assets/images/avatermale.png')} />
+              <View className="w-3" />
+              <View>
+              <Text style={[Textstyles.text_small]}>Jones Dayo</Text>
+              <Text>4.2  <FontAwesome name="star" color={primarycolor}/></Text>
+              </View>
+            </View>
+            <View className="flex-row items-center">
+           <TouchableOpacity><Ionicons name="call-sharp" size={24} color={primarycolortwo} /></TouchableOpacity> 
+            <View className="w-3" />
+            <TouchableOpacity><MaterialIcons name="messenger" size={24}  color={primarycolortwo}/></TouchableOpacity>
+            </View>
+        
+
+
+          </View>
+          <View className="h-5" />
+          <View>
+              <View className=" flex-row items-center">
+                <FontAwesome
+                  name="dot-circle-o"
+                  size={20}
+                  color={primarycolor}
+                />
+                <Text className=" ml-4">Hall 1 Uniben</Text>
+              </View>
+              <View style={{width:1,marginTop:1}} className="h-2 ml-2   bg-black"/>
+              <View style={{width:1,marginTop:1}} className="h-2 ml-2   bg-black"/>
+              <View style={{width:1,marginTop:1}} className="h-2 ml-2   bg-black"/>
+              <View style={{width:1,marginTop:1}} className="h-2 ml-2   bg-black"/>
+              <View className=" flex-row items-center ">
+                <Feather name="map-pin" size={20} color="black" />
+                <Text className=" ml-4">Lecture theater 1 Uniben</Text>
+              </View>
+            </View>
+            <View className="h-5" />
+            <CustomButton
+            backgroundColor={primarycolor}
+            TextColor={whitecolor}
+            Textname={'Mark as done'}
+            />
         </View>
       </View>
     </>
   );
 };
 
-export default Order;
+export default OrderLocation;
 
 const styles = StyleSheet.create({
   markerContainer: {

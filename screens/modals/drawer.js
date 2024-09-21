@@ -33,12 +33,15 @@ export const Drawer = ({ navigateTo, buttonText, text, title }) => {
     console.log("to " + navigateTo);
     navigation.navigate(navigateTo);
   };
+  
   return (
     <>
       <View className="w-screen h-screen">
+      <View
+       style={{backgroundColor:greycolortwo}} className="opacity-70 h-full w-full"/>
         <View
           style={{ backgroundColor: whitecolor }}
-          className="absolute top-[14.5vh] w-full px-6 py-0 rounded-t-[24px] h-1/2 shadow-lg"
+          className="absolute bottom-0 w-full px-6 py-0 rounded-t-[24px] h-1/2 shadow-lg"
         >
           <View className="h-2" />
           <View
@@ -301,7 +304,7 @@ export const PaymentDrawer = ({
        onStartShouldSetResponder={() => true}
        onResponderRelease={handleclose}
        style={{backgroundColor:greycolortwo}} className="opacity-70 h-full w-full"/>
-      <View style={{elevation:6}} className="absolute bottom-0 z-50 h-1/2 w-full bg-white rounded-t-2xl items-center px-5">
+      <View style={{elevation:4}} className="absolute shadow-sm shadow-black bottom-0 z-50 h-1/2 w-full bg-white rounded-t-2xl items-center px-5">
       <View className="h-1 bg-slate-400 w-16 rounded-2xl mt-2"/>
       <View className="h-3"/>
       <View>
@@ -381,6 +384,7 @@ export const PaymentDrawer = ({
         Textname={'Submit'}
         TextColor={whitecolor}
         width={'100%'}
+        onPress={handlePress}
         />
       
 
@@ -389,3 +393,6 @@ export const PaymentDrawer = ({
     </View> 
   );
 };
+export const successmodal=()=>{
+
+}

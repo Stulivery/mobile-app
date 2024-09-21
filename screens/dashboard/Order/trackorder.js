@@ -12,12 +12,15 @@ import { primarycolor } from "../../../constants/color";
 import { greycolortwo, primarycolortwo } from "../../../constants/color";
 import { CustomTextInput } from "../../mycomponents/mycomponent";
 import { useNavigation } from "@react-navigation/native";
+import Footer from "../footer";
+import { ScrollView } from "react-native-gesture-handler";
 const Trackorder = () => {
   const navigation = useNavigation();
 
-  const handletomap = () => {
-    navigation.navigate("order");
-  };
+
+  const handlenavigatetelocation=()=>{
+    navigation.navigate("orderlocation");
+  }
   return (
     <>
       <View
@@ -49,7 +52,6 @@ const Trackorder = () => {
             <Text style={[Textstyles.text_xxmedium]}>Tracking History</Text>
           </View>
           <TouchableOpacity
-            onPress={handletomap}
             className=" flex items-center justify-center"
           >
             <Text style={[Textstyles.text_xsmall, { color: primarycolor }]}>
@@ -57,7 +59,8 @@ const Trackorder = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity className="w-full justify-between  h-10 flex-row ">
+        <ScrollView>
+        <TouchableOpacity onPress={()=>handlenavigatetelocation()} className="w-full justify-between  h-10 flex-row ">
           <View className="mt-auto mb-auto w-44 gap-4 flex-row">
             <View className="mt-auto mb-auto flex justify-center items-center w-8 h-10 ">
               <Feather name="clock" size={20} color={primarycolortwo} />
@@ -84,7 +87,14 @@ const Trackorder = () => {
             <Feather name="x" size={20} color={primarycolortwo} />
           </TouchableOpacity>
         </TouchableOpacity>
+
+        </ScrollView>
+        
       </View>
+      <Footer
+      active={'Track Order'}
+
+      />
     </>
   );
 };

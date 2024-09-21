@@ -9,7 +9,7 @@ import { greycolor, greycolorfive, primarycolor, primarycolortwo, whitecolor } f
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { useState } from "react"
 import { useNavigation } from "@react-navigation/native"
-import { HomeIcons, Profileicon, TransactionIcon, Walleticon } from "../../utilities/Svgfiles.js";
+import { DeliveryBoxIcon, HomeIcons, Profileicon, TransactionIcon, Walleticon } from "../../utilities/Svgfiles.js";
 
 const Footer=({active})=>{
     const navigation=useNavigation()
@@ -41,6 +41,16 @@ const Footer=({active})=>{
             />
             <Text style={[Textstyles.text_xsma,{color:active === 'Order' &&primarycolor}]}>{active==='Order'&& 'Order'}</Text>
             </TouchableOpacity>
+            <TouchableOpacity 
+            onPress={()=>handlenavigate('Track Order')}
+            className="items-center">
+            <DeliveryBoxIcon
+            height={20}
+            width={20}
+            stroke={active === 'Track Order' ? primarycolor : primarycolortwo}
+            />
+            <Text style={[Textstyles.text_xsma,{color:active === 'Track Order' &&primarycolor}]}>{active==='Track Order'&& 'Track Order'}</Text>
+            </TouchableOpacity>
           
             <TouchableOpacity 
             onPress={()=>handlenavigate('Wallet')}
@@ -62,6 +72,7 @@ const Footer=({active})=>{
             />
             <Text style={[Textstyles.text_xsma,{color:active === 'Profile'&&primarycolor}]}>{active==='Profile' && 'Profile'}</Text>
             </TouchableOpacity>
+
             
 
 

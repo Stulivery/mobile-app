@@ -20,6 +20,7 @@ import PaymentScreen from "../screens/TransactionPage/depositScreen";
 import Neworder from "../screens/dashboard/Order/neworder";
 import Trackorder from "../screens/dashboard/Order/trackorder";
 import Order from "../screens/dashboard/Order/order";
+import OrderAmountConfirm from "../screens/dashboard/Order/OrderAmountConfirm";
 
 const StackWrapper = () => {
   const Stack = createStackNavigator();
@@ -128,6 +129,14 @@ const StackWrapper = () => {
                 name="neworder"
                 component={Neworder}
               />
+                 <Stack.Screen
+               options={{
+                gestureEnabled: true,
+                gestureDirection: Platform.OS === "ios" ? "horizontal" : Platform.OS === "android" && "vertical",
+              }}
+                name="orderconfirm"
+                component={OrderAmountConfirm}
+              />
             <Stack.Screen
                options={{
                 gestureEnabled: true,
@@ -142,7 +151,7 @@ const StackWrapper = () => {
                 gestureEnabled: true,
                 gestureDirection: Platform.OS === "ios" ? "horizontal" : Platform.OS === "android" && "vertical",
               }}
-                name="trackorder"
+                name="Track Order"
                 component={Trackorder}
               />
               <Stack.Screen

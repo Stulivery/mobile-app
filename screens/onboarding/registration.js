@@ -84,7 +84,7 @@ export default function Registration() {
         }
         if (currentStep === 3) {
             setShowDrawer(true);
-            translateY.value = setShowDrawer ? withSpring(300) : withSpring(600);
+            translateY.value = setShowDrawer ? withSpring(0) : withSpring(300);
         }
     };
     const handleContinueBackwards = () => {
@@ -93,7 +93,7 @@ export default function Registration() {
             setCurrentStep((prevStep) => prevStep - 1);
         }
     };
-    const translateY = useSharedValue(600);
+    const translateY = useSharedValue(300);
     const animatedStyles = useAnimatedStyle(() => ({
         transform: [{ translateY: translateY.value }],
     }));
@@ -415,13 +415,13 @@ const EmailVerification = ({
     const email = "yomzeew@gmail.com";
     const [showKeyboard, setShowKeyboard] = useState(false);
     const [emailVerificationNumber, setEmailVerificationNumber] = useState(["", "", "", ""]); // OTP array for 4 digits
-    const translateY = useSharedValue(500);
+    const translateY = useSharedValue(300);
     const animatedStyles = useAnimatedStyle(() => ({
         transform: [{ translateY: translateY.value }],
     }));
     const handleShowKeys = () => {
         setShowKeyboard((prevState) => !prevState);
-        translateY.value = showKeyboard ? withSpring(200) : withSpring(500);
+        translateY.value = showKeyboard ? withSpring(0) : withSpring(300);
     };
 
     // Function to update OTP values

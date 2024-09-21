@@ -30,13 +30,18 @@ import {
 import { PaymentDrawer } from "../../modals/drawer";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import Footer from "../footer";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { MapModal } from "../../modals/MapModal";
 
 const Neworder = () => {
   const [showDrawer, setShowDrawer] = useState(false);
+  const [showmap,setshowmap]=useState(false)
+  const [showmappickaddress ,setshowmappickaddress ]=useState(false)
+  const [addressCoord,setAddressCoord]=useState({latitude:'',longitude:''})
+  const [addressCoordPickup,setAddressCoordPickup]=useState({latitude:'',longitude:''})
+
 
   const handleContinue = () => {
-  
-    
       setShowDrawer(true);
       translateY.value = withSpring(0);
     
@@ -64,12 +69,32 @@ const Neworder = () => {
             <PaymentDrawer
               title="Payment Method"
               buttonText="Submit"
-              navigateTo=""
+              navigateTo="orderconfirm"
               onClose={handleCloseDrawer} // Pass handleCloseDrawer as a prop
             />
           </Animated.View>
         </View>
       )}
+      {showmap &&
+      <View className="z-50 w-full justify-center items-center h-full absolute">
+        <MapModal
+        onClose={()=>setshowmap(false)}
+        setSelectedLocationprops={({latitude,longitude})=>setAddressCoord({latitude,longitude})}
+        />
+
+      </View>
+        
+      }
+        {showmappickaddress &&
+      <View className="z-50 w-full justify-center items-center h-full absolute">
+        <MapModal
+        onClose={()=>setshowmappickaddress(false)}
+        setSelectedLocationprops={({latitude,longitude})=>setAddressCoordPickup({latitude,longitude})}
+        />
+
+      </View>
+        
+      }
       <View style={{ height: height, width: width }} className="bg-white px-5 pb-[20px] pt-[40px]">
           <Header
             title={<Text className="" style={[Textstyles.text_cmedium]}>New Order</Text>}
@@ -118,6 +143,13 @@ const Neworder = () => {
                   placeholderTextColor={greycolortwo}
                   sideicon={<Feather name="map-pin" size={20} color={primarycolortwo} />}
                 />
+              <View className="h-4" />
+              <View className="items-start w-full">
+              <TouchableOpacity onPress={()=>setshowmappickaddress(true)} className=" bg-white px-3 py-2 rounded-2xl border-1">
+                <Text>Locate Position on Map</Text>
+              </TouchableOpacity>
+              <Text>{addressCoord.latitude}</Text>
+              </View>
                 <View className="h-4" />
                 <CustomTextInputshort
                   placeholder="Name"
@@ -152,6 +184,13 @@ const Neworder = () => {
                 sideicon={<Feather name="map-pin" size={20} color={primarycolortwo} />}
               />
               <View className="h-4" />
+              <View className="items-center w-full">
+              <TouchableOpacity onPress={()=>setshowmap(true)} className=" bg-white px-3 py-2 rounded-2xl border-1">
+                <Text>Locate Position on Map</Text>
+              </TouchableOpacity>
+              <Text>{addressCoord.latitude}</Text>
+
+              </View>
               <CustomTextInputshort
                 placeholder="Contact Name"
                 placeholderTextColor={greycolortwo}
