@@ -32,30 +32,24 @@ import { Feather, FontAwesome } from "@expo/vector-icons";
 import Footer from "../footer";
 
 const Neworder = () => {
-  const [currentStep, setCurrentStep] = useState(0); // Step 0, 1, 2, 3
   const [showDrawer, setShowDrawer] = useState(false);
 
   const handleContinue = () => {
-    if (currentStep < 3) {
-      setCurrentStep((prevStep) => prevStep + 1);
-    } else if (currentStep === 3) {
+  
+    
       setShowDrawer(true);
       translateY.value = withSpring(0);
-    }
+    
   };
 
-  const handleContinueBackwards = () => {
-    if (currentStep > 0) {
-      setCurrentStep((prevStep) => prevStep - 1);
-    }
-  };
+
 
   const handleCloseDrawer = () => {
     setShowDrawer(false);
-    translateY.value = withSpring(600); // Move drawer out of view
+    translateY.value = withSpring(300); // Move drawer out of view
   };
 
-  const translateY = useSharedValue(600);
+  const translateY = useSharedValue(300);
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }));
@@ -63,9 +57,9 @@ const Neworder = () => {
   return (
     <>
       {showDrawer && (
-        <View style={{ zIndex: 12000 }} className="bottom-0 absolute">
+        <View style={{ zIndex: 12000 }} className="bottom-0 h-full absolute">
           <Animated.View
-            style={[animatedStyles, { height: 508 }]} // Adjust height as needed
+            style={[animatedStyles]} // Adjust height as needed
           >
             <PaymentDrawer
               title="Payment Method"
@@ -76,7 +70,7 @@ const Neworder = () => {
           </Animated.View>
         </View>
       )}
-      <View style={{ height: height, width: width }} className="bg-white px-5 pt-[40px] pb-[88px]">
+      <View style={{ height: height, width: width }} className="bg-white px-5 pb-[20px] pt-[40px]">
           <Header
             title={<Text className="" style={[Textstyles.text_cmedium]}>New Order</Text>}
           />
@@ -182,7 +176,6 @@ const Neworder = () => {
           </ScrollView>
           </KeyboardAvoidingView>
         </View>
-      <Footer/>
     </>
   );
 };

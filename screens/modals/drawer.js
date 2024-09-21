@@ -16,7 +16,7 @@ import {
 } from "react-native";
 import { Textstyles } from "../../constants/fontsize";
 import { CustomButton } from "../mycomponents/mycomponent";
-import { Avatar } from "react-native-paper";
+import { Avatar, Title } from "react-native-paper";
 import { IconButton } from "react-native-paper";
 import {
   MaterialIcons,
@@ -25,6 +25,7 @@ import {
 } from "@expo/vector-icons";
 import { RadioButton } from "react-native-paper";
 import { Feather } from "@expo/vector-icons"; // Importing Feather icons
+import { BankIcon, Cash2icon, Walleticon } from "../../utilities/Svgfiles";
 
 export const Drawer = ({ navigateTo, buttonText, text, title }) => {
   const navigation = useNavigation();
@@ -259,135 +260,132 @@ export const PaymentDrawer = ({
   title,
   onClose,
 }) => {
-  const [checked, setChecked] = useState("wallet"); // To handle payment option selection
+  const [walletchecked, setWalletChecked] = useState(false);
+  const [bankchecked, setBankChecked] = useState(false);
+  const [cashchecked, setCashChecked] = useState(false);
   const navigation = useNavigation();
 
   const handlePress = () => {
     console.log("to " + navigateTo);
     navigation.navigate(navigateTo);
   };
+  const handleclose=()=>{
+    onClose()
+  }
+  const handlepickpayment=(value)=>{
+    
+    if(value==='wallet'){
+      setWalletChecked(true)
+      setBankChecked(false)
+      setCashChecked(false)
+
+    }
+    else if(value==='cash'){
+      setWalletChecked(false)
+      setBankChecked(false)
+      setCashChecked(true)
+
+
+    }
+    else{
+      setWalletChecked(false)
+      setBankChecked(true)
+      setCashChecked(false)
+
+    }
+  }
 
   return (
     <View className="w-screen h-screen">
-      <TouchableWithoutFeedback onPress={onClose}>
-        <View
-          className="absolute top-0 left-0 right-0 bottom-0"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-        />
-      </TouchableWithoutFeedback>
       <View
-        style={{ backgroundColor: whitecolor }}
-        className="absolute top-[14.5vh] w-full px-6 py-0 rounded-t-[24px] h-[80%] shadow-lg"
-      >
-        <View className="flex-row justify-between items-center mt-16">
-          <Text style={[Textstyles.text_cmedium, { color: primarycolortwo }]}>
-            {title}
-          </Text>
-          <TouchableOpacity onPress={onClose}>
-            <Feather name="x" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View className="h-2" />
-        <View
-          style={{ backgroundColor: greycolortwo }}
-          className="h-1 w-[67px] rounded-[11px] mx-auto"
-        />
-        <View className="h-2" />
-        <View className="items-center">
-          <RadioButton.Group
-            onValueChange={(value) => setChecked(value)}
-            value={checked}
-          >
-            {/* Payment Options */}
-            <TouchableOpacity
-              className="flex-row justify-between items-center bg-white rounded-xl p-4 mb-2 w-80 border-1"
-              style={{
-                borderColor: checked === "wallet" ? "#073945" : "#F9F9F9",
-              }}
-              onPress={() => setChecked("wallet")}
-            >
-              <View className="flex-row">
-                <View className="w-12 h-12 rounded-xl bg-gray-200 flex justify-center items-center mr-2">
-                  <Feather name="credit-card" size={24} color="black" />
-                </View>
-                <View className="-mt-1">
-                  <Text style={[Textstyles.text_small]}>Wallet</Text>
-                  <Text style={{ color: greycolortwo }}>₦10,500.00</Text>
-                </View>
-              </View>
-              <RadioButton value="wallet" color="#073945" />
-            </TouchableOpacity>
+       onStartShouldSetResponder={() => true}
+       onResponderRelease={handleclose}
+       style={{backgroundColor:greycolortwo}} className="opacity-70 h-full w-full"/>
+      <View style={{elevation:6}} className="absolute bottom-0 z-50 h-1/2 w-full bg-white rounded-t-2xl items-center px-5">
+      <View className="h-1 bg-slate-400 w-16 rounded-2xl mt-2"/>
+      <View className="h-3"/>
+      <View>
+        <Text style={[Textstyles.text_medium]}>{title}</Text>
 
-            {/* Cash Option */}
-            <TouchableOpacity
-              className="flex-row justify-between items-center bg-white rounded-xl p-4 mb-2 w-80 border-1"
-              style={{
-                borderColor: checked === "cash" ? "#073945" : "#F9F9F9",
-              }}
-              onPress={() => setChecked("cash")}
-            >
-              <View className="flex-row">
-                <View className="w-12 h-12 rounded-xl bg-gray-200 flex justify-center items-center mr-2">
-                  <Feather name="dollar-sign" size={24} color="black" />
-                </View>
-                <View className="mt-3">
-                  <Text style={[Textstyles.text_small]}>Cash</Text>
-                </View>
-              </View>
-              <RadioButton value="cash" color="#073945" />
-            </TouchableOpacity>
-
-            {/* Bank Transfer Option */}
-            <TouchableOpacity
-              className="flex-row justify-between items-center bg-white rounded-xl p-4 mb-2 w-80 border-1"
-              style={{
-                borderColor: checked === "bank" ? "#073945" : "#F9F9F9",
-              }}
-              onPress={() => setChecked("bank")}
-            >
-              <View className="flex-row">
-                <View className="w-12 h-12 rounded-xl bg-gray-200 flex justify-center items-center mr-2">
-                  <Feather name="briefcase" size={24} color="black" />
-                </View>
-                <View className="mt-3">
-                  <Text style={[Textstyles.text_small]}>Bank</Text>
-                </View>
-              </View>
-              <RadioButton value="bank" color="#073945" />
-            </TouchableOpacity>
-
-            {/* Paypal Option */}
-            <TouchableOpacity
-              className="flex-row justify-between items-center bg-white rounded-xl p-4 mb-2 w-80 border-1"
-              style={{
-                borderColor: checked === "paypal" ? "#073945" : "#F9F9F9",
-              }}
-              onPress={() => setChecked("paypal")}
-            >
-              <View className="flex-row">
-                <View className="w-12 h-12 rounded-xl bg-gray-200 flex justify-center items-center mr-2">
-                  <Feather name="send" size={24} color="black" />
-                </View>
-                <View className="mt-3">
-                  <Text style={[Textstyles.text_small]}>Paypal</Text>
-                </View>
-              </View>
-              <RadioButton value="paypal" color="#073945" />
-            </TouchableOpacity>
-          </RadioButton.Group>
-        </View>
-        <View className="h-5" />
-        <CustomButton
-          backgroundColor={primarycolor}
-          Textname={buttonText}
-          TextColor={whitecolor}
-          onPress={handlePress}
-        />
-        <View className="h-11" />
-        <View className="w-screen absolute bottom-0">
-          <View className="w-[134px] h-[5px] rounded-[100px] bg-[#101010] mx-auto" />
-        </View>
       </View>
-    </View>
+      <View className="h-5"/>
+      <TouchableOpacity onPress={() =>handlepickpayment('wallet')} style={{borderColor:primarycolortwo,borderWidth:1,borderRadius:12,height:70}} className="w-full items-center flex-row justify-between px-3">
+      <View className="flex-row items-center">
+       <View style={{height:50, width:50}} className="bg-slate-100 rounded-2xl flex justify-center items-center">
+        <Walleticon
+        fill={primarycolortwo}
+        stroke={primarycolortwo}
+        height={24}
+        width={24}
+        
+        />
+       
+       </View>
+       <View className="w-2"/>
+       <View>
+       <Text style={[Textstyles.text_x16small]}>Wallet</Text>
+       <Text style={[Textstyles.text_x16small]} className="text-slate-400">&#x20A6; 10,500</Text>
+
+       </View>
+       </View>
+       <View>
+        <RadioButton
+        value={walletchecked}
+        status={walletchecked === true ? 'checked' : 'unchecked' }
+        
+        />
+       </View>
+      </TouchableOpacity>
+      <View className="h-3" />
+      <TouchableOpacity onPress={() => handlepickpayment('cash')} style={{borderColor:primarycolortwo,borderWidth:1,borderRadius:12,height:70}} className="w-full items-center flex-row justify-between px-3">
+      <View className="flex-row items-center">
+       <View style={{height:50, width:50}} className="bg-slate-100 rounded-2xl flex justify-center items-center">
+        <Cash2icon/>
+       </View>
+       <View className="w-2"/>
+       <View>
+       <Text style={[Textstyles.text_x16small]}>Cash</Text>
+       </View>
+       </View>
+       <View>
+        <RadioButton
+        value={cashchecked}
+        status={ cashchecked === true ? 'checked' : 'unchecked' }
+        
+        />
+       </View>
+      </TouchableOpacity>
+      <View className="h-3" />
+      <TouchableOpacity onPress={() => handlepickpayment('bank')} style={{borderColor:primarycolortwo,borderWidth:1,borderRadius:12,height:70}} className="w-full items-center flex-row justify-between px-3">
+      <View className="flex-row items-center">
+       <View style={{height:50, width:50}} className="bg-slate-100 rounded-2xl flex justify-center items-center">
+        <BankIcon/>
+       </View>
+       <View className="w-2"/>
+       <View>
+       <Text style={[Textstyles.text_x16small]}>Bank Transfer</Text>
+       </View>
+       </View>
+       <View>
+        <RadioButton
+        value={bankchecked}
+        status={ bankchecked === true ? 'checked' : 'unchecked' }
+        
+        />
+       </View>
+       
+      </TouchableOpacity>
+      <View className="h-5"/>
+      <CustomButton
+        backgroundColor={primarycolor}
+        Textname={'Submit'}
+        TextColor={whitecolor}
+        width={'100%'}
+        />
+      
+
+
+      </View>
+    </View> 
   );
 };

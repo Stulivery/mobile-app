@@ -13,11 +13,13 @@ import {
 import Registration from "../screens/onboarding/registration";
 import { Platform } from "react-native";
 import Dashboard from "../screens/dashboard/dashboard";
-import Order from "../screens/dashboard/Order/order";
+import OrderLocation from "../screens/dashboard/Order/orderlocation";
 import Profile from "../screens/Profile/Profile";
 import VerificationFlowStack from "../screens/verification/verification-stack";
 import PaymentScreen from "../screens/TransactionPage/depositScreen";
 import Neworder from "../screens/dashboard/Order/neworder";
+import Trackorder from "../screens/dashboard/Order/trackorder";
+import Order from "../screens/dashboard/Order/order";
 
 const StackWrapper = () => {
   const Stack = createStackNavigator();
@@ -115,16 +117,33 @@ const StackWrapper = () => {
                 gestureEnabled: true,
                 gestureDirection: Platform.OS === "ios" ? "horizontal" : Platform.OS === "android" && "vertical",
               }}
-                name="order"
+                name="Order"
                 component={Order}
               />
-                <Stack.Screen
+               <Stack.Screen
                options={{
                 gestureEnabled: true,
                 gestureDirection: Platform.OS === "ios" ? "horizontal" : Platform.OS === "android" && "vertical",
               }}
                 name="neworder"
                 component={Neworder}
+              />
+            <Stack.Screen
+               options={{
+                gestureEnabled: true,
+                gestureDirection: Platform.OS === "ios" ? "horizontal" : Platform.OS === "android" && "vertical",
+              }}
+                name="orderlocation"
+                component={OrderLocation}
+              />
+               
+                  <Stack.Screen
+               options={{
+                gestureEnabled: true,
+                gestureDirection: Platform.OS === "ios" ? "horizontal" : Platform.OS === "android" && "vertical",
+              }}
+                name="trackorder"
+                component={Trackorder}
               />
               <Stack.Screen
                options={{

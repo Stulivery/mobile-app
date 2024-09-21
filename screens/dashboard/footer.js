@@ -32,14 +32,14 @@ const Footer=({active})=>{
             <Text style={[Textstyles.text_xsma,{color:primarycolor}]}>{active==='Home' && 'Home'}</Text>
             </TouchableOpacity>
             <TouchableOpacity 
-            onPress={()=>handlenavigate('Transactions')}
+            onPress={()=>handlenavigate('Order')}
             className="items-center">
             <TransactionIcon
             height={20}
             width={20}
-            stroke={active === 'Transactions' ? primarycolor : primarycolortwo}
+            stroke={active === 'Order' ? primarycolor : primarycolortwo}
             />
-            <Text style={[Textstyles.text_xsma,{color:active === 'Transactions' &&primarycolor}]}>{active==='Transactions'&& 'Transactions'}</Text>
+            <Text style={[Textstyles.text_xsma,{color:active === 'Order' &&primarycolor}]}>{active==='Order'&& 'Order'}</Text>
             </TouchableOpacity>
           
             <TouchableOpacity 

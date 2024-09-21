@@ -1,16 +1,16 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import { height, width } from "../../constants/mobileDimensions";
+import { height, width } from "../../../constants/mobileDimensions";
 
 import {
   Feather,
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { Header } from "../mycomponents/verification";
-import { Textstyles } from "../../constants/fontsize";
-import { primarycolor } from "../../constants/color";
-import { greycolortwo, primarycolortwo } from "../../constants/color";
-import { CustomTextInput } from "../mycomponents/mycomponent";
+import { Header } from "../../mycomponents/verification";
+import { Textstyles } from "../../../constants/fontsize";
+import { primarycolor } from "../../../constants/color";
+import { greycolortwo, primarycolortwo } from "../../../constants/color";
+import { CustomTextInput } from "../../mycomponents/mycomponent";
 import { useNavigation } from "@react-navigation/native";
 const Trackorder = () => {
   const navigation = useNavigation();
@@ -57,9 +57,9 @@ const Trackorder = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity className="  w-full justify-between  h-10 flex-row ">
-          <View className="   mt-auto mb-auto w-44 gap-4 flex-row">
-            <View className=" mt-auto mb-auto flex justify-center items-center w-8 h-10 ">
+        <TouchableOpacity className="w-full justify-between  h-10 flex-row ">
+          <View className="mt-auto mb-auto w-44 gap-4 flex-row">
+            <View className="mt-auto mb-auto flex justify-center items-center w-8 h-10 ">
               <Feather name="clock" size={20} color={primarycolortwo} />
             </View>
             <View className=" mt-auto mb-auto flex justify-center items-center  h-10">

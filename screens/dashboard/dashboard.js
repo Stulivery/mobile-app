@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView
 } from "react-native";
 import Truck from "../../assets/images/container-truck.svg";
 import DeliveryTrack from "../../assets/images/delivery-tracking-01.svg";
@@ -25,7 +26,6 @@ import {
   spotcolor,
   whitecolor,
 } from "../../constants/color";
-import { ScrollView } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
 import { CustomButton, Iconplaceholder } from "../mycomponents/mycomponent";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -43,7 +43,7 @@ const Dashboard = () => {
   };
 
   const handleorder = () => {
-    navigation.navigate("neworder");
+    navigation.navigate("Order");
   };
 
   const fetchData = async () => {
