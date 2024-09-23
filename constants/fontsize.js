@@ -54,4 +54,16 @@ export const Textstyles = StyleSheet.create({
     fontWeight: 400,
     lineHeight: 30,
   },
+  text_c: {
+    fontFamily: "TTFirsNeueMedium",
+    fontSize: 13,
+    fontWeight: 400,
+    lineHeight: 30,
+  },
+  text_cc: {
+    fontFamily: "TTFirsNeueMedium",
+    fontSize: 16,
+    fontWeight: 400,
+    lineHeight: 30,
+  },
 });

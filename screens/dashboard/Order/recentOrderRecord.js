@@ -13,12 +13,18 @@ import { Svg } from "react-native-svg";
 import { DeliveryBoxIcon } from "../../../utilities/Svgfiles";
 import { Textstyles } from "../../../constants/fontsize";
 
-const RecentOrderRecord = ({ ordernumber, orderstatus, ordertime, index, onPress }) => {
+const RecentOrderRecord = ({
+  ordernumber,
+  orderstatus,
+  ordertime,
+  index,
+  onPress,
+}) => {
   return (
     <View key={index}>
       {index > 0 && <View className="h-2" />}
       <TouchableOpacity
-      onPress={()=>onPress()}
+        onPress={() => onPress()}
         style={{
           borderWidth: 1,
           borderColor: greycolorfive,
@@ -37,11 +43,7 @@ const RecentOrderRecord = ({ ordernumber, orderstatus, ordertime, index, onPress
             }}
             className="justify-center items-center flex"
           >
-            <DeliveryBoxIcon 
-            width={24}
-            height={24}
-            stroke={'#212121'}
-            />
+            <DeliveryBoxIcon width={24} height={24} stroke={"#212121"} />
           </View>
           <View className="w-2" />
           <View>

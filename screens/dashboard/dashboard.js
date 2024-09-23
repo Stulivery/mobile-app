@@ -4,7 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import Truck from "../../assets/images/container-truck.svg";
 import DeliveryTrack from "../../assets/images/delivery-tracking-01.svg";
@@ -315,8 +315,8 @@ const Dashboard = () => {
             <View>
               <Text style={[Textstyles.text_small]}>Recent Order</Text>
             </View>
-            <View style={{ height: height * 0.3 }} className="w-full">
-              <ScrollView>
+            <View className="w-full ">
+              <ScrollView style={{ flex: 1 }}>
                 <RecentOrderRecord
                   ordernumber={"MM09132005"}
                   orderstatus={"in transit"}
@@ -359,9 +359,7 @@ const Dashboard = () => {
         </View>
       </View>
 
-      <Footer 
-      active={'Home'}
-      />
+      <Footer active={"Home"} />
     </>
   );
 };

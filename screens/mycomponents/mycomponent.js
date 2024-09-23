@@ -1,8 +1,10 @@
-import { TouchableOpacity, Text, View } from "react-native";
+import { TouchableOpacity, Text, View, Image } from "react-native";
 import { customstyle, radioButtonStyles } from "../../constants/customstyle";
 import { Textstyles } from "../../constants/fontsize";
 import { TextInput } from "react-native-gesture-handler";
 import { useState } from "react";
+import { greycolor, greycolorthree } from "../../constants/color";
+import { FontAwesome } from "@expo/vector-icons";
 import { greycolortwo, primarycolor } from "../../constants/color";
 import { height, width } from "../../constants/mobileDimensions";
 
@@ -35,12 +37,57 @@ export const CustomButton = ({
       >
         {leftIcon}
         <Text style={[Textstyles.text_button, { color: TextColor }]}>
-          {" "}
-          {Textname}{" "}
+          {Textname}
         </Text>
         {rightIcon}
       </TouchableOpacity>
     </>
+  );
+};
+
+export const TransactionItem = ({
+  iconName, // Name of the FontAwesome icon (like "arrow-up" or "arrow-down")
+  transferType, // 'Transfer to' or 'Transfer from'
+  personName, // Name of the person for the transaction
+  amount, // Transaction amount
+  status, // Transaction status (Successful, Pending, etc.)
+  time, // Time of the transaction
+  date, // Date of the transaction
+  iconColor = "red", // Default icon color for outgoing\
+}) => {
+  return (
+    <TouchableOpacity className="w-full flex-row justify-between items-center border-b  rounded-lg py-2 border-[#E2E8F0] px-1 my-2">
+      <View className="flex-row items-center">
+        <View
+          className="flex justify-center items-center w-10 h-10 rounded-full mr-4"
+          style={{ backgroundColor: iconColor }}
+        >
+          
+          <FontAwesome name={iconName} size={16} color="#FFF" />
+        </View>
+        <View>
+          <Text style={[Textstyles.text_c]}>
+            {transferType} {personName}
+          </Text>
+          <Text style={[Textstyles.text_xsma, { color: greycolorthree }]}>
+            {date} @ {time}
+          </Text>
+        </View>
+      </View>
+
+      {/* Right side: Amount and Status */}
+      <View className="items-end">
+        <Text style={[Textstyles.text_cc]}>{amount}</Text>
+        <Text
+          className={
+            status === "Successful" ? "text-[#049504]" : "text-[#8A0000]"
+          }
+          style={[Textstyles.text_c]}
+        >
+          {status}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -84,6 +131,113 @@ export const CustomTextInput = ({
         )}
       </View>
     </>
+  );
+};
+
+export const SearchInput = ({
+  autoCapitalize,
+  placeholder,
+  placeholderTextColor,
+  sideicon,
+  rightIcon,
+  onChange,
+  secureTextEntry,
+  disable,
+  value,
+}) => {
+  const [showicon, seticon] = useState(true); // Initially, show the icon
+  const [inputValue, setInputValue] = useState(value); // Track the input value
+  return (
+    <View className="w-full relative flex justify-center">
+      {/* Show icon only when input is empty and not focused */}
+      {showicon && inputValue === "" && (
+        <View className="absolute left-2 z-50">{sideicon}</View>
+      )}
+      <TextInput
+        onFocus={() => seticon(false)} // Hide icon when focused
+        onBlur={() => inputValue === "" && seticon(true)} // Show icon on blur if input is empty
+        placeholder={placeholder}
+        placeholderTextColor={placeholderTextColor}
+        autoCapitalize={autoCapitalize || "none"}
+        style={[customstyle.textinputstyle]}
+        onChangeText={(text) => {
+          setInputValue(text); // Update input value state
+          onChange(text); // Call the parent onChange handler if provided
+        }}
+        secureTextEntry={secureTextEntry}
+        value={inputValue}
+        editable={disable}
+      />
+      {rightIcon && (
+        <View
+          className="absolute right-2 z-50"
+          style={{
+            backgroundColor: "#FFDD00", // Yellow background color
+            padding: 10, // Add some padding around the icon
+            borderRadius: 10, // Adjust to make the background rounded
+          }}
+        >
+          {rightIcon}
+        </View>
+      )}
+    </View>
+  );
+};
+
+export const Custom = ({
+  autoCapitalize,
+  placeholder,
+  placeholderTextColor,
+  sideicon,
+  rightIcon,
+  onChange,
+  secureTextEntry,
+  disable,
+  value,
+}) => {
+  const [showicon, seticon] = useState(true); // Initially, show the icon
+  const [inputValue, setInputValue] = useState(value); // Track the input value
+
+  return (
+    <View
+      style={{ width: "100%", position: "relative", justifyContent: "center" }}
+    >
+      {/* Show icon only when input is empty and not focused */}
+      {showicon && inputValue === "" && (
+        <View style={{ position: "absolute", left: 10, zIndex: 50 }}>
+          {sideicon}
+        </View>
+      )}
+
+      <TextInput
+        onFocus={() => seticon(false)} // Hide icon when focused
+        onBlur={() => inputValue === "" && seticon(true)} // Show icon on blur if input is empty
+        placeholder={placeholder}
+        placeholderTextColor={placeholderTextColor}
+        autoCapitalize={autoCapitalize || "none"}
+        style={{
+          paddingLeft: 40, // Add padding for the icon
+          height: 50,
+          borderRadius: 12,
+          backgroundColor: "#F2F2F2", // Light grey background
+          color: "#000", // Text color
+          fontSize: 16,
+        }}
+        onChangeText={(text) => {
+          setInputValue(text); // Update input value state
+          onChange(text); // Call the parent onChange handler if provided
+        }}
+        secureTextEntry={secureTextEntry}
+        value={inputValue}
+        editable={disable}
+      />
+
+      {rightIcon && (
+        <View style={{ position: "absolute", right: 10, zIndex: 50 }}>
+          {rightIcon}
+        </View>
+      )}
+    </View>
   );
 };
 
