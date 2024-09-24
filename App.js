@@ -18,6 +18,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import Dashboard from "./screens/dashboard/dashboard";
 import VerificationFlowStack from "./screens/verification/verification-stack";
+import { UserProvider } from "./screens/user-mode";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -36,30 +37,32 @@ export default function App() {
   const Stack = createStackNavigator();
 
   return (
-    <View className="h-full w-full" onLayout={onLayoutRootView}>
-      <PaperProvider>
-        <GestureHandlerRootView>
-          <NavigationContainer>
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              {/* <Stack.Screen  name="start" component={Home} /> */}
-              <Stack.Screen name="onboarding" component={StackWrapper} />
-              <Stack.Screen name="dashboardscreen" component={Dashboard} />
-              <Stack.Screen
-                name="verification"
-                component={VerificationFlowStack}
-              />
-              {/* <Stack.Screen name="neworder" component={Neworder} />
-               <Stack.Screen name="transctions" component={Transctions} />
+    <UserProvider>
+      <View className="h-full w-full" onLayout={onLayoutRootView}>
+        <PaperProvider>
+          <GestureHandlerRootView>
+            <NavigationContainer>
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                {/* <Stack.Screen  name="start" component={Home} /> */}
+                <Stack.Screen name="onboarding" component={StackWrapper} />
+                <Stack.Screen name="dashboardscreen" component={Dashboard} />
+                <Stack.Screen
+                  name="verification"
+                  component={VerificationFlowStack}
+                />
+                {/* <Stack.Screen name="neworder" component={Neworder} />
+              <Stack.Screen name="transctions" component={Transctions} />
               <Stack.Screen name="orderdetails" component={OrderDetails} />
               <Stack.Screen name="trackorder" component={Trackorder} />
               <Stack.Screen name="editprofile" component={Editprofile} />
               <Stack.Screen name="deliverydash" component={DeliveryDash} />
               <Stack.Screen name="neardelivery" component={Nearby} /> */}
-            </Stack.Navigator>
-          </NavigationContainer>
-        </GestureHandlerRootView>
-      </PaperProvider>
-    </View>
+              </Stack.Navigator>
+            </NavigationContainer>
+          </GestureHandlerRootView>
+        </PaperProvider>
+      </View>
+    </UserProvider>
   );
 }
 
