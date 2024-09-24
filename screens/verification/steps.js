@@ -29,7 +29,7 @@ export const Step1 = () => {
                         }
                         title="BVN"
                         description="Supported by over 1 million people"
-                       
+
                     />
                     <View className="h-6" />
                     <VerificationStep1Button
@@ -38,31 +38,31 @@ export const Step1 = () => {
                         }
                         title="NIN"
                         description="Supported by over 1 million people"
-                       
+
                     />
-                     <View className="h-6" />
+                    <View className="h-6" />
                     <View className="w-[90%] flex-row items-center mx-auto">
-                    <View className="w-[49%]">
-                        <CustomButton
-                            backgroundColor={whitecolor}
-                            Textname="Skip"
-                            TextColor={primarycolortwo}
-                            borderColor={primarycolortwo}
-                            borderWidth={1}
-                            onPress={() => navigation.navigate("dashboardhome")}
-                            className
-                        />
+                        <View className="w-[49%]">
+                            <CustomButton
+                                backgroundColor={whitecolor}
+                                Textname="Skip"
+                                TextColor={primarycolortwo}
+                                borderColor={primarycolortwo}
+                                borderWidth={1}
+                                onPress={() => navigation.navigate("dashboard")}
+                                className
+                            />
+                        </View>
+                        <View className="w-3" />
+                        <View className="w-[49%]">
+                            <CustomButton
+                                backgroundColor={primarycolor}
+                                Textname="Continue"
+                                TextColor={whitecolor}
+                                onPress={() => navigation.navigate("step-2")}
+                            />
+                        </View>
                     </View>
-                    <View className="w-3" />
-                    <View className="w-[49%]">
-                        <CustomButton
-                            backgroundColor={primarycolor}
-                            Textname="Continue"
-                            TextColor={whitecolor}
-                            onPress={() => navigation.navigate("step-2")}
-                        />
-                    </View>
-                </View>
                 </View>
             </View>
             <View className="w-screen absolute bottom-0">

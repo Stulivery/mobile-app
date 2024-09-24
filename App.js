@@ -18,7 +18,6 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import Dashboard from "./screens/dashboard/dashboard";
 import VerificationFlowStack from "./screens/verification/verification-stack";
-import { UserProvider } from "./screens/user-mode";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -37,7 +36,6 @@ export default function App() {
   const Stack = createStackNavigator();
 
   return (
-    <UserProvider>
       <View className="h-full w-full" onLayout={onLayoutRootView}>
         <PaperProvider>
           <GestureHandlerRootView>
@@ -62,7 +60,6 @@ export default function App() {
           </GestureHandlerRootView>
         </PaperProvider>
       </View>
-    </UserProvider>
   );
 }
 
