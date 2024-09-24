@@ -21,6 +21,7 @@ import Neworder from "../screens/dashboard/Order/neworder";
 import Trackorder from "../screens/dashboard/Order/trackorder";
 import Order from "../screens/dashboard/Order/order";
 import OrderAmountConfirm from "../screens/dashboard/Order/OrderAmountConfirm";
+import Wallet from '../screens/dashboard/wallet'
 
 const StackWrapper = () => {
   const Stack = createStackNavigator();
@@ -169,6 +170,14 @@ const StackWrapper = () => {
               }}
                 name="paymentscreen"
                 component={PaymentScreen}
+              />
+                <Stack.Screen
+               options={{
+                gestureEnabled: true,
+                gestureDirection: Platform.OS === "ios" ? "horizontal" : Platform.OS === "android" && "vertical",
+              }}
+                name="Wallet"
+                component={Wallet}
               />
               
     </Stack.Navigator>

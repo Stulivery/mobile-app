@@ -18,8 +18,6 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import Dashboard from "./screens/dashboard/dashboard";
 import VerificationFlowStack from "./screens/verification/verification-stack";
-import Transctions from "./screens/dashboard/transctions";
-import Wallet from "./screens/dashboard/wallet";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -50,7 +48,6 @@ export default function App() {
                 name="verification"
                 component={VerificationFlowStack}
               />
-              <Stack.Screen name="wallet" component={Wallet} />
               {/* <Stack.Screen name="neworder" component={Neworder} />
                <Stack.Screen name="transctions" component={Transctions} />
               <Stack.Screen name="orderdetails" component={OrderDetails} />

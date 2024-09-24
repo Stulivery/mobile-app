@@ -53,7 +53,7 @@ const Footer=({active})=>{
             </TouchableOpacity>
           
             <TouchableOpacity 
-            onPress={()=>handlenavigate('wallet')}
+            onPress={()=>handlenavigate('Wallet')}
             className="items-center">
             <Walleticon 
             height={20}

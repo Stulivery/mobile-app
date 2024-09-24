@@ -1,4 +1,4 @@
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Circle } from "react-native-maps";
 import { useState, useEffect } from "react";
 import * as Location from "expo-location";
 import { Entypo, Feather } from "@expo/vector-icons";
@@ -6,11 +6,21 @@ import { height } from "../../constants/mobileDimensions";
 import { View, Text } from 'react-native';
 import CustomLoader from "../../preloader/preloader";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { MapStyle } from "../../constants/mapStyle";
 
 export const MapModal = ({ onClose, setSelectedLocationprops }) => {
     const [location, setLocation] = useState(null);
     const [selectedLocation, setSelectedLocation] = useState(null);
     const [address, setAddress] = useState(null);
+    const [places, setPlaces] = useState([]);
+    const [region, setRegion] = useState({
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    });
+    const radius = 750;
+
 
     // Fetch user location
     useEffect(() => {
@@ -54,23 +64,28 @@ export const MapModal = ({ onClose, setSelectedLocationprops }) => {
                 </View>
                 {location ? (  // Check if location is available
                     <MapView
+                    
                         className="w-full rounded-2xl h-full"
+                        customMapStyle={MapStyle}
                         mapType="standard" // options: standard, satellite, hybrid
                         onPress={handlePress}
                         initialRegion={{
                             latitude: location.latitude,
                             longitude: location.longitude,
-                            latitudeDelta: 0.005,
-                            longitudeDelta: 0.005,
-                        }}
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                           
+                          }}
+                        
                     >
+                      
                         {selectedLocation && (
                             <Marker
                                 coordinate={selectedLocation}
                                 title="Selected Location"
                                 description={address}
                             >
-                                <Entypo name="location-pin" size={24} color="black" />
+                                <Entypo name="location-pin" size={30} color="black" />
                             </Marker>
                         )}
                     </MapView>

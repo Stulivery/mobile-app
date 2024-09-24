@@ -101,7 +101,7 @@ const Wallet = () => {
     <>
       <View
         style={{ height: height, width: width }}
-        className=" bg-[#FFFEF4] px-3 pt-[40px] flex"
+        className=" bg-[#FFFEF4] px-3 pt-[40px] pb-[80px] flex"
       >
         <Header
           title={
@@ -181,6 +181,9 @@ const Wallet = () => {
           ))}
         </ScrollView>
       </View>
+      <Footer
+      active={'Wallet'}
+      />
     </>
   );
 };
