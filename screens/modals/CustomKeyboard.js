@@ -12,7 +12,7 @@ const NumericKeyboard = ({ onPress }) => {
     ['1', '2', '3'],
     ['4', '5', '6'],
     ['7', '8', '9'],
-    ['0', '', '*']
+    ['0', '-', '*']
   ];
 
   const handleButtonPress = (value) => {
@@ -29,13 +29,13 @@ const NumericKeyboard = ({ onPress }) => {
               key={buttonIndex}
               style={[
                 styles.button,
-                button === '' ? styles.deleteButton : {},
+                button === '-' ? styles.deleteButton : {},
                 button === '*' ? styles.submitButton : {},
               ]}
               onPress={() => handleButtonPress(button)}
             >
               <Text style={styles.buttonText}>
-                {button === '' ? 'x' : button === '*' ? 'Submit' : button}
+                {button === '-' ? 'x' : button === '*' ? 'Submit' : button}
               </Text>
             </TouchableOpacity>
           ))}

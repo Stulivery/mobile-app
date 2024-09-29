@@ -14,6 +14,7 @@ import Order from "../screens/dashboard/Order/order";
 import OrderAmountConfirm from "../screens/dashboard/Order/OrderAmountConfirm";
 import Wallet from "../screens/dashboard/wallet";
 import { UserProvider } from "../screens/user-mode";
+import Chat from "../screens/chats/chat";
 
 const DashboardStackWrapper = () => {
     const Stack = createStackNavigator();
@@ -139,7 +140,21 @@ const DashboardStackWrapper = () => {
                     name="Wallet"
                     component={Wallet}
                 />
+                 <Stack.Screen
+                  options={{
+                    gestureEnabled: true,
+                    gestureDirection:
+                        Platform.OS === "ios"
+                            ? "horizontal"
+                            : Platform.OS === "android" && "vertical",
+                }}
+                name="Chat"
+                component={Chat}
+                 />
             </Stack.Navigator>
+           
+
+           
         </UserProvider>
     );
 };

@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, View, Image } from "react-native";
+import { TouchableOpacity, Text, View, Image, ActivityIndicator } from "react-native";
 import { customstyle, radioButtonStyles } from "../../constants/customstyle";
 import { Textstyles } from "../../constants/fontsize";
 import { TextInput } from "react-native-gesture-handler";
@@ -19,6 +19,7 @@ export const CustomButton = ({
   rightIcon,
   props,
   width,
+  Indicatorstatus
 }) => {
   return (
     <>
@@ -37,7 +38,7 @@ export const CustomButton = ({
       >
         {leftIcon}
         <Text style={[Textstyles.text_button, { color: TextColor }]}>
-          {Textname}
+          {Indicatorstatus?<ActivityIndicator/>:Textname}
         </Text>
         {rightIcon}
       </TouchableOpacity>

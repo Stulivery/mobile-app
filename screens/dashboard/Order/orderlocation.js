@@ -11,8 +11,10 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import { Avatar } from "react-native-paper";
 import CustomLoader from "../../../preloader/preloader";
 import { CustomButton } from "../../mycomponents/mycomponent";
+import { useNavigation } from "@react-navigation/native";
 
 const CustomMarker = ({ icon, color }) => {
+  
   return (
     <View style={styles.markerContainer}>
       <View style={[styles.markerBox, { borderColor: color }]}>
@@ -41,6 +43,7 @@ const generateZigzagPointsWithRoots = (start, end, numberOfPoints = 10) => {
 };
 
 const OrderLocation = () => {
+  const navigation=useNavigation()
   const [location, setLocation] = useState(null);
   const [randomLocation, setRandomLocation] = useState(null);
   const [currentStep, setCurrentStep] = useState(0); // 0, 1, 2 for step progress
@@ -100,6 +103,10 @@ const OrderLocation = () => {
       }
     })();
   }, []);
+  const handlenavigationchat=()=>{
+    navigation.navigate('Chat')
+
+  }
 
 
   // Function to handle step continuation and showing the drawer
@@ -184,7 +191,7 @@ const OrderLocation = () => {
             <View className="flex-row items-center">
            <TouchableOpacity><Ionicons name="call-sharp" size={24} color={primarycolortwo} /></TouchableOpacity> 
             <View className="w-3" />
-            <TouchableOpacity><MaterialIcons name="messenger" size={24}  color={primarycolortwo}/></TouchableOpacity>
+            <TouchableOpacity onPress={handlenavigationchat}><MaterialIcons name="messenger" size={24}  color={primarycolortwo}/></TouchableOpacity>
             </View>
         
 

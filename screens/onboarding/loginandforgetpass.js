@@ -235,7 +235,7 @@ export const Otpverify = () => {
 
   // Function to update OTP values
   const handlepickvalue = (value) => {
-    if (value === "") {
+    if (value === "-") {
       // Handle delete action (remove the last filled digit)
       setotpArray((prevOtp) => {
         const lastFilledIndex = prevOtp.findLastIndex((digit) => digit !== ""); // Find the last filled index
@@ -280,7 +280,7 @@ export const Otpverify = () => {
           <NumericKeyboard onPress={(value) => handlepickvalue(value)} />
         </Animated.View>
       </View>
-      <View className="relative z-50 h-screen w-full px-5 py-[88px]">
+      <View className="relative  h-screen w-full px-5 py-[88px]">
         <View className="h-2/3 flex">
           <Image
             className="h-12 w-12"
