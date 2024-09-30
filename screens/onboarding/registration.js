@@ -1,4 +1,4 @@
-import { Image, Pressable, Text, TouchableOpacity, View,ActivityIndicator } from "react-native";
+import { Image, Pressable, Text, TouchableOpacity, View,ActivityIndicator, KeyboardAvoidingView, Platform } from "react-native";
 import Google from "../../assets/images/google.svg";
 import Facebook from "../../assets/images/facebook.svg";
 import Apple from "../../assets/images/apple.svg";
@@ -42,6 +42,7 @@ import { sendOtpurl } from "../../endpoints/endpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SendOtpandtoken, VerifyEmail } from "../../utilities/datafetch";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function Registration() {
     const navigation = useNavigation();
@@ -61,6 +62,7 @@ export default function Registration() {
     const [timeLeft, setTimeLeft] = useState(initialTime);
     const [getValue,setValue]=useState('')
     const [otpArray, setotpArray] = useState(["", "", "", ""]); 
+    const [Address,setAddress]=useState('')
     useFocusEffect(
         useCallback(() => {
           // Reset all states to their initial values when screen comes into focus
@@ -144,6 +146,10 @@ export default function Registration() {
                 setErrorMsg("Please Enter your phone number");
                 return;
               }
+              if (!Address) {
+                setErrorMsg("Please Enter your address");
+                return;
+              }
        
           await  VerifyEmail(email,setErrorMsg,setshowindicator,setCurrentStep)
           setTimeLeft(initialTime)
@@ -189,7 +195,7 @@ export default function Registration() {
                 setErrorMsg('Select student option')
                 return
             }
-            const data={Name,Phonenumber,email,Password,GenderSelectOption,StudentId,roleSelectOption}
+            const data={Name,Phonenumber,email,Password,Address,GenderSelectOption,StudentId,roleSelectOption}
             console.log(data)
             setShowDrawer(true);
             translateY.value = setShowDrawer ? withSpring(0) : withSpring(300);
@@ -307,6 +313,7 @@ export default function Registration() {
                         {currentStep === 0 && (
                             <>
                             <Text className="text-red-500">{errorMsg}</Text>
+                           
                                 <CustomTextInput
                                     placeholder={"Name"}
                                     placeholderTextColor={greycolortwo}
@@ -344,6 +351,23 @@ export default function Registration() {
                                     value={Phonenumber}
                                     onChange={(text) => setPhonenumber(text)}
                                 />
+                                 <View className="h-3" />
+                                <CustomTextInput
+                                    placeholder={"Address"}
+                                    placeholderTextColor={greycolortwo}
+                                    sideicon={
+                                        <MaterialIcons
+                                            name="home"
+                                            size={20}
+                                            color={primarycolortwo}
+                                        />
+                                    }
+                                    value={Address}
+                                    onChange={(text) => setAddress(text)}
+                                />
+
+                           
+                               
                             </>
                         )}
                         {currentStep === 1 && (
@@ -452,6 +476,7 @@ export default function Registration() {
                                         options={["Male", "Female"]}
                                     />
                                 )}
+                                <View className="h-3" />
                                 <TouchableOpacity
                                     onPress={handleShowStudentOption}
                                 >

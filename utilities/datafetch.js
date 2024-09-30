@@ -1,6 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { sendOtpurl, verifyotpurl } from "../endpoints/endpoint";
+import { RegUrl, sendOtpurl, verifyotpurl } from "../endpoints/endpoint";
 
 export const VerifyEmail = async (email,setErrorMsg, setshowindicator, setCurrentStep) => {
   // Validate the inputs
@@ -111,4 +111,49 @@ export const SendOtpandtoken = async (otp, setErrorMsg, setshowindicator, setCur
       setshowindicator(false);
     }
   };
+  export const InsertReg=async(Name,Phonenumber,email,Password,Address,GenderSelectOption,StudentId,roleSelectOption)=>{
+    try{
+        setshowindicator(true);
+        const data={Name,Phonenumber,email,Password,Address,GenderSelectOption,StudentId,roleSelectOption}
+         // Make the POST request to verify OTP
+      const response = await axios.post(RegUrl, data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      // Check for a successful response
+      if (response.status === 201 || response.status === 200 || response.status === 203) {
+        console.log('Response data:', response.data);
+        setErrorMsg(''); // Clear any previous error message
+        setshowindicator(false)
+        await AsyncStorage.removeItem('otptoken'); 
+        return setCurrentStep((prev)=>prev+1); // Move to the next step (e.g., successful verification)
+       
+        // Remove the OTP token after success
+
+      }
+
+
+
+    }catch(error){
+    if (error.response) {
+        // Server responded with a status other than 2xx
+        console.error('Error response:', error.response.data);
+        setErrorMsg(error.response.data.error || 'Something went wrong, please try again.');
+      } else if (error.request) {
+        // Request was made, but no response received
+        console.error('Error request:', error.request);
+        setErrorMsg('No response from the server. Please check your network connection.');
+      } else {
+        // Other errors
+        console.error('Error message:', error.message);
+        setErrorMsg('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      // Hide the indicator after the process finishes
+      setshowindicator(false);
+    }
+
+  }
   
