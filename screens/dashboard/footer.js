@@ -21,7 +21,7 @@ const Footer=({active})=>{
         <>
         <View style={{width:width,height:92,backgroundColor:whitecolor}} className="flex-row justify-evenly items-center absolute bottom-0">
             <TouchableOpacity
-            onPress={()=>handlenavigate('dashboardhome')}
+            onPress={()=>handlenavigate('dashboard')}
              className="items-center">
               <HomeIcons
               width={20}

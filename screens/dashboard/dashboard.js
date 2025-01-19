@@ -32,8 +32,10 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import Footer from "./footer";
 import { useNavigation } from "@react-navigation/native";
 import RecentOrderRecord from "./Order/recentOrderRecord";
+import { useUser } from "../user-mode";
 
 const Dashboard = () => {
+  const {useMode,Data}=useUser()
   const navigation = useNavigation();
   const [refreshing, setRefreshing] = useState(false);
   const [kycverify, setkycverify] = useState(false);
@@ -84,7 +86,7 @@ const Dashboard = () => {
           <View className="w-3" />
           <View className="items-start">
             <Text style={[Textstyles.text_x16small]}>Welcome back</Text>
-            <Text style={[Textstyles.text_x16small]}>John</Text>
+            <Text style={[Textstyles.text_x16small]}>{Data.name}</Text>
           </View>
         </View>
         <View className="h-5" />

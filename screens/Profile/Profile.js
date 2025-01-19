@@ -27,6 +27,7 @@ import {
     PhonenumberIcon,
 } from "../../utilities/Svgfiles";
 import { useUser } from "../user-mode";
+import { UpdateStatus } from "../../utilities/datafetch";
 
 const Profile = () => {
     const navArray = [
@@ -98,6 +99,8 @@ export default Profile;
 
 const Profiledetials = () => {
     const { userMode, onChangeMode } = useUser();
+    
+    
     return (
         <>
             <View>

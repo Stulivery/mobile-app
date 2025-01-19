@@ -1,4 +1,4 @@
-import { Image, Pressable, Text, TouchableOpacity, View,ActivityIndicator, KeyboardAvoidingView, Platform } from "react-native";
+import { Image, Pressable, Text, TouchableOpacity, View, ActivityIndicator, KeyboardAvoidingView, Platform } from "react-native";
 import Google from "../../assets/images/google.svg";
 import Facebook from "../../assets/images/facebook.svg";
 import Apple from "../../assets/images/apple.svg";
@@ -11,7 +11,7 @@ import {
     primarycolortwo,
     whitecolor,
 } from "../../constants/color";
-import { useNavigation,useFocusEffect} from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import {
     Box,
     CustomButton,
@@ -28,7 +28,7 @@ import {
     MaterialCommunityIcons,
     MaterialIcons,
 } from "@expo/vector-icons";
-import { useState,useEffect,useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Animated, {
     useAnimatedStyle,
     useSharedValue,
@@ -40,7 +40,7 @@ import NumericKeyboard from "../modals/CustomKeyboard";
 import axios from "axios";
 import { sendOtpurl } from "../../endpoints/endpoint";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { SendOtpandtoken, VerifyEmail } from "../../utilities/datafetch";
+import { InsertReg, SendOtpandtoken, VerifyEmail } from "../../utilities/datafetch";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -50,38 +50,38 @@ export default function Registration() {
     const [email, setEmail] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [Name,setName]=useState("")
-    const [Phonenumber,setPhonenumber]=useState('')
-    const [ConfirmPassword,setConfirmPassword]=useState()
-    const [Password,setPassword]=useState('')
-    const [StudentId,setStudentId]=useState('')
+    const [Name, setName] = useState("")
+    const [Phonenumber, setPhonenumber] = useState('')
+    const [ConfirmPassword, setConfirmPassword] = useState()
+    const [Password, setPassword] = useState('')
+    const [StudentId, setStudentId] = useState('')
     const [errorMsg, setErrorMsg] = useState(null);
     const [studentSelectOption, setStudentSelectOption] = useState("");
-    const [showindicator,setshowindicator]=useState(false)
+    const [showindicator, setshowindicator] = useState(false)
     const initialTime = 5 * 60;
     const [timeLeft, setTimeLeft] = useState(initialTime);
-    const [getValue,setValue]=useState('')
-    const [otpArray, setotpArray] = useState(["", "", "", ""]); 
-    const [Address,setAddress]=useState('')
+    const [getValue, setValue] = useState('')
+    const [otpArray, setotpArray] = useState(["", "", "", ""]);
+    const [Address, setAddress] = useState('')
     useFocusEffect(
         useCallback(() => {
-          // Reset all states to their initial values when screen comes into focus
-          setName('')
-          setEmail('')
-          setPassword('')
-          setConfirmPassword('')
-          setPhonenumber('')
-          setStudentId('')
-          setRoleSelectOption('')
-          setStudentSelectOption('')
-          setCurrentStep(0);
-          setShowDrawer(false)
-          // Optional: Any cleanup can be done when the screen loses focus
-          return () => {
-            console.log('Screen unfocused or cleanup logic');
-          };
+            // Reset all states to their initial values when screen comes into focus
+            setName('')
+            setEmail('')
+            setPassword('')
+            setConfirmPassword('')
+            setPhonenumber('')
+            setStudentId('')
+            setRoleSelectOption('')
+            setStudentSelectOption('')
+            setCurrentStep(0);
+            setShowDrawer(false)
+            // Optional: Any cleanup can be done when the screen loses focus
+            return () => {
+                console.log('Screen unfocused or cleanup logic');
+            };
         }, []) // The empty array ensures this runs only when the screen is focused/unfocused
-      );
+    );
 
     const handleStudentSelectOption = (value) => {
         setStudentSelectOption(value);
@@ -99,18 +99,18 @@ export default function Registration() {
             setShowRoleSelectOption(false);
         }
     }
-    const [showGenderOption,setshowGenderOption]=useState(false)
-    const [GenderSelectOption,setGenderSelectOption]=useState('')
-    const handleShowGenderOption=()=>{
+    const [showGenderOption, setshowGenderOption] = useState(false)
+    const [GenderSelectOption, setGenderSelectOption] = useState('')
+    const handleShowGenderOption = () => {
         setshowGenderOption(!showGenderOption)
-        if(showGenderOption){
+        if (showGenderOption) {
             setGenderSelectOption("");
             setshowGenderOption(false);
 
         }
 
     }
-    
+
     const handleGendeSelectrOption = (value) => {
         setGenderSelectOption(value);
     };
@@ -131,74 +131,68 @@ export default function Registration() {
         navigation.navigate("login");
     };
     const [showDrawer, setShowDrawer] = useState(false);
-    const handleContinue = async() => {
-        console.log(currentStep)  
-        if(currentStep===0){
+    const handleContinue = async () => {
+        setErrorMsg('')
+        // setCurrentStep((prevStep) => prevStep + 1);
+        console.log(currentStep)
+        if (currentStep === 0) {
             if (!Name) {
                 setErrorMsg("Please Enter your name");
                 return;
-              }
-              if (!email) {
+            }
+            if (!email) {
                 setErrorMsg("Please Enter your email");
                 return;
-              }
-              if (!Phonenumber) {
+            }
+            if (!Phonenumber) {
                 setErrorMsg("Please Enter your phone number");
                 return;
-              }
-              if (!Address) {
+            }
+            if (!Address) {
                 setErrorMsg("Please Enter your address");
                 return;
-              }
-       
-          await  VerifyEmail(email,setErrorMsg,setshowindicator,setCurrentStep)
-          setTimeLeft(initialTime)
-          setotpArray(["", "", "", ""])
-       
+            }
+
+            await VerifyEmail(email, setErrorMsg, setshowindicator, setCurrentStep,()=>{(null)})
+            setTimeLeft(initialTime)
+            setotpArray(["", "", "", ""])
+
         }
-        if(currentStep===1){
-            if(timeLeft<1){
+        if (currentStep === 1) {
+            if (timeLeft < 1) {
                 setErrorMsg('Otp TimeOut')
                 return
             }
-            const otp=otpArray.join("")
+            const otp = otpArray.join("")
             console.log(otp)
-            await SendOtpandtoken(otp,setErrorMsg,setshowindicator,() => {
+            await SendOtpandtoken(otp, setErrorMsg, setshowindicator, () => {
                 setCurrentStep((prevStep) => prevStep + 1); // Ensure step is updated after OTP submission
-              });
-            
+            });
+
 
         }
-        if(currentStep===2){
-            if(Password!==ConfirmPassword){
+        if (currentStep === 2) {
+            if (Password !== ConfirmPassword) {
                 setErrorMsg('Password not match')
                 return
             }
-            if(Password.length<8){
+            if (Password.length < 8) {
                 setErrorMsg('Password too Short not less 8 character')
                 return
             }
-            
-                setCurrentStep((prevStep) => prevStep + 1)
 
-        
-          
-
+            setCurrentStep((prevStep) => prevStep + 1)
         }
-       
-
-        // if (currentStep < 3) {
-        //     setCurrentStep((prevStep) => prevStep + 1);
-        // }
         if (currentStep === 3) {
-            if(!roleSelectOption){
-                setErrorMsg('Select student option')
-                return
-            }
-            const data={Name,Phonenumber,email,Password,Address,GenderSelectOption,StudentId,roleSelectOption}
-            console.log(data)
-            setShowDrawer(true);
+            console.log(roleSelectOption)
+            try{
+            InsertReg(Name, Phonenumber, email, Password, Address, GenderSelectOption, StudentId, roleSelectOption,setShowDrawer,setErrorMsg, setshowindicator, setCurrentStep)
             translateY.value = setShowDrawer ? withSpring(0) : withSpring(300);
+            }catch(error){
+                console.error(error)
+
+            }
+            
         }
     };
     const handleContinueBackwards = () => {
@@ -206,12 +200,12 @@ export default function Registration() {
         if (currentStep > 0) {
             setCurrentStep((prevStep) => prevStep - 1);
         }
-        if(currentStep===2){
+        if (currentStep === 2) {
             setTimeLeft(0)
             setotpArray(["", "", "", ""])
-    
-            }
-    
+
+        }
+
     };
     const translateY = useSharedValue(300);
     const animatedStyles = useAnimatedStyle(() => ({
@@ -221,35 +215,35 @@ export default function Registration() {
         if (value === "-") {
             // Handle delete action (remove the last filled digit)
             setotpArray((prevOtp) => {
-              const lastFilledIndex = prevOtp.findLastIndex((digit) => digit !== ""); // Find the last filled index
-              if (lastFilledIndex > -1) {
-                const newOtp = [...prevOtp];
-                newOtp[lastFilledIndex] = ""; // Remove the last filled digit
-                return newOtp;
-              }
-              return prevOtp; // Return unchanged if OTP is already empty
+                const lastFilledIndex = prevOtp.findLastIndex((digit) => digit !== ""); // Find the last filled index
+                if (lastFilledIndex > -1) {
+                    const newOtp = [...prevOtp];
+                    newOtp[lastFilledIndex] = ""; // Remove the last filled digit
+                    return newOtp;
+                }
+                return prevOtp; // Return unchanged if OTP is already empty
             });
-          } else if (value === "*") {
+        } else if (value === "*") {
             // Handle OTP submission when * is pressed
             if (otpArray.some((digit) => digit === "")) {
                 setErrorMsg("Incomplete OTP"); // Show error if OTP is incomplete
             } else {
                 setErrorMsg(""); // Clear the error message
-              // Handle OTP submission logic here
-              console.log("OTP Submitted:", otpArray.join("")); // Example submission action
+                // Handle OTP submission logic here
+                console.log("OTP Submitted:", otpArray.join("")); // Example submission action
             }
-          } else {
+        } else {
             // Append digit to the first empty slot
             setotpArray((prevOtp) => {
-              const nextEmptyIndex = prevOtp.indexOf(""); // Find the first empty index
-              if (nextEmptyIndex > -1) {
-                const newOtp = [...prevOtp];
-                newOtp[nextEmptyIndex] = value; // Fill the empty slot
-                return newOtp;
-              }
-              return prevOtp; // Return unchanged if OTP is already filled
+                const nextEmptyIndex = prevOtp.indexOf(""); // Find the first empty index
+                if (nextEmptyIndex > -1) {
+                    const newOtp = [...prevOtp];
+                    newOtp[nextEmptyIndex] = value; // Fill the empty slot
+                    return newOtp;
+                }
+                return prevOtp; // Return unchanged if OTP is already filled
             });
-          }
+        }
     };
     return (
         <>
@@ -276,7 +270,7 @@ export default function Registration() {
                     </View>
                 </>
             )}
-            
+
             <View style={{ height: height }} className={`w-full px-5 py-[88px]`}>
                 <View>
                     <View>
@@ -312,8 +306,8 @@ export default function Registration() {
                         <View className="h-4" />
                         {currentStep === 0 && (
                             <>
-                            <Text className="text-red-500">{errorMsg}</Text>
-                           
+                                <Text className="text-red-500">{errorMsg}</Text>
+
                                 <CustomTextInput
                                     placeholder={"Name"}
                                     placeholderTextColor={greycolortwo}
@@ -351,7 +345,7 @@ export default function Registration() {
                                     value={Phonenumber}
                                     onChange={(text) => setPhonenumber(text)}
                                 />
-                                 <View className="h-3" />
+                                <View className="h-3" />
                                 <CustomTextInput
                                     placeholder={"Address"}
                                     placeholderTextColor={greycolortwo}
@@ -366,28 +360,28 @@ export default function Registration() {
                                     onChange={(text) => setAddress(text)}
                                 />
 
-                           
-                               
+
+
                             </>
                         )}
                         {currentStep === 1 && (
                             <View>
-                                   <EmailVerification
-                                errorMsg={errorMsg}
-                                setErrorMsg={setErrorMsg}
-                                setTimeLeft={setTimeLeft}
-                                timeLeft={timeLeft}
-                                getValue={getValue}
-                                setotpArray={setotpArray}
-                                otpArray={otpArray}
-                                email={email}
-                            />
-                                </View>
-                         
+                                <EmailVerification
+                                    errorMsg={errorMsg}
+                                    setErrorMsg={setErrorMsg}
+                                    setTimeLeft={setTimeLeft}
+                                    timeLeft={timeLeft}
+                                    getValue={getValue}
+                                    setotpArray={setotpArray}
+                                    otpArray={otpArray}
+                                    email={email}
+                                />
+                            </View>
+
                         )}
                         {currentStep === 2 && (
                             <>
-                             <Text className="text-red-500">{errorMsg}</Text>
+                                <Text className="text-red-500">{errorMsg}</Text>
                                 <CustomTextInput
                                     placeholder={"Password"}
                                     placeholderTextColor={greycolortwo}
@@ -421,7 +415,7 @@ export default function Registration() {
                                             size={20}
                                             color={primarycolortwo}
                                         />
-                                       
+
                                     }
                                     rightIcon={
                                         <TouchableOpacity onPress={handleShowConfirmPassword}>
@@ -444,126 +438,128 @@ export default function Registration() {
                         )}
                         {currentStep === 3 && (
                             <>
-                             <Text className="text-red-500">{errorMsg}</Text>
-                                <TouchableOpacity
-                                    onPress={handleShowGenderOption}
-                                >
-                                    <CustomSelect
-                                        placeHolder="Select Gender"
-                                        placeholderTextColor={greycolortwo}
-                                        leftIcon={
-                                            <FontAwesome6
-                                            name="user" 
-                                             size={20}
-                                                color={primarycolortwo}
-                                            />
-                                        }
-                                        rightIcon={
-                                            <MaterialIcons
-                                                name={showStudentOption ? "keyboard-arrow-up" : "keyboard-arrow-down"}
-                                                size={20}
-                                                color={greycolortwo}
-                                            />
-                                        }
-
-                                    />
-                                </TouchableOpacity>
-                                <View className="h-3" />
-                                {showGenderOption && (
-                                    <CustomSelectRadioBox
-                                        selected={GenderSelectOption}
-                                        setSelected={handleGendeSelectrOption}
-                                        options={["Male", "Female"]}
-                                    />
-                                )}
-                                <View className="h-3" />
-                                <TouchableOpacity
-                                    onPress={handleShowStudentOption}
-                                >
-                                    <CustomSelect
-                                        placeHolder="Are you a student"
-                                        placeholderTextColor={greycolortwo}
-                                        leftIcon={
-                                            <MaterialCommunityIcons
-                                                name="chat-question-outline"
-                                                size={20}
-                                                color={greycolortwo}
-                                            />
-                                        }
-                                        rightIcon={
-                                            <MaterialIcons
-                                                name={showStudentOption ? "keyboard-arrow-up" : "keyboard-arrow-down"}
-                                                size={20}
-                                                color={greycolortwo}
-                                            />
-                                        }
-
-                                    />
-                                </TouchableOpacity>
-                                <View className="h-3" />
-                                {showStudentOption && (
-                                    <CustomSelectRadioBox
-                                        selected={studentSelectOption}
-                                        setSelected={handleStudentSelectOption}
-                                        options={["Yes", "No"]}
-                                    />
-                                )}
-                                <View className="h-8" />
-                                {studentSelectOption === "Yes" ? (
-                                    <>
-                                        <CustomTextInput
-                                            placeholder="Student ID/ Matric number"
+                                <Text className="text-red-500">{errorMsg}</Text>
+                                <ScrollView showsVerticalScrollIndicator={false} className="max-h-[100vh]">
+                                    <TouchableOpacity
+                                        onPress={handleShowGenderOption}
+                                    >
+                                        <CustomSelect
+                                            placeHolder="Select Gender"
                                             placeholderTextColor={greycolortwo}
-                                            sideicon={
+                                            leftIcon={
+                                                <FontAwesome6
+                                                    name="user"
+                                                    size={20}
+                                                    color={primarycolortwo}
+                                                />
+                                            }
+                                            rightIcon={
                                                 <MaterialIcons
-                                                    name="account-box"
+                                                    name={showStudentOption ? "keyboard-arrow-up" : "keyboard-arrow-down"}
                                                     size={20}
                                                     color={greycolortwo}
                                                 />
                                             }
-                                            onChange={(text) => setStudentId(text)}
+
                                         />
-                                    </>
-                                ) : (
-                                    studentSelectOption === "No" && (
+                                    </TouchableOpacity>
+                                    <View className="h-3" />
+                                    {showGenderOption && (
+                                        <CustomSelectRadioBox
+                                            selected={GenderSelectOption}
+                                            setSelected={handleGendeSelectrOption}
+                                            options={["Male", "Female"]}
+                                        />
+                                    )}
+                                    <View className="h-3" />
+                                    <TouchableOpacity
+                                        onPress={handleShowStudentOption}
+                                    >
+                                        <CustomSelect
+                                            placeHolder="Are you a student"
+                                            placeholderTextColor={greycolortwo}
+                                            leftIcon={
+                                                <MaterialCommunityIcons
+                                                    name="chat-question-outline"
+                                                    size={20}
+                                                    color={greycolortwo}
+                                                />
+                                            }
+                                            rightIcon={
+                                                <MaterialIcons
+                                                    name={showStudentOption ? "keyboard-arrow-up" : "keyboard-arrow-down"}
+                                                    size={20}
+                                                    color={greycolortwo}
+                                                />
+                                            }
+
+                                        />
+                                    </TouchableOpacity>
+                                    <View className="h-3" />
+                                    {showStudentOption && (
+                                        <CustomSelectRadioBox
+                                            selected={studentSelectOption}
+                                            setSelected={handleStudentSelectOption}
+                                            options={["Yes", "No"]}
+                                        />
+                                    )}
+                                    <View className="h-8" />
+                                    {studentSelectOption === "Yes" ? (
                                         <>
-                                            <TouchableOpacity
-                                                onPress={handleShowRoleSelectOption}
-                                            >
-                                                <CustomSelect
-                                                    placeHolder="Choose role"
-                                                    placeholderTextColor={greycolortwo}
-                                                    leftIcon={
-                                                        <MaterialCommunityIcons
-                                                            name="chat-question-outline"
-                                                            size={20}
-                                                            color={greycolortwo}
-                                                        />
-                                                    }
-                                                    rightIcon={
-                                                        <MaterialIcons
-                                                            name={showRoleSelectOption ? "keyboard-arrow-up" : "keyboard-arrow-down"}
-                                                            size={20}
-                                                            color={greycolortwo}
-                                                        />
-                                                    }
-                                                />
-                                            </TouchableOpacity>
-                                            <View className="h-8" />
-                                            {showRoleSelectOption && (
-                                                <CustomSelectRadioBox
-                                                    selected={roleSelectOption}
-                                                    setSelected={handleRoleSelectOption}
-                                                    options={["University Teaching Staff", "Non-teaching staff", "Resident"]}
-                                                />
-                                            )}
+                                            <CustomTextInput
+                                                placeholder="Student ID/ Matric number"
+                                                placeholderTextColor={greycolortwo}
+                                                sideicon={
+                                                    <MaterialIcons
+                                                        name="account-box"
+                                                        size={20}
+                                                        color={greycolortwo}
+                                                    />
+                                                }
+                                                onChange={(text) => setStudentId(text)}
+                                            />
                                         </>
-                                    )
-                                )}
+                                    ) : (
+                                        studentSelectOption === "No" && (
+                                            <>
+                                                <TouchableOpacity
+                                                    onPress={handleShowRoleSelectOption}
+                                                >
+                                                    <CustomSelect
+                                                        placeHolder="Choose role"
+                                                        placeholderTextColor={greycolortwo}
+                                                        leftIcon={
+                                                            <MaterialCommunityIcons
+                                                                name="chat-question-outline"
+                                                                size={20}
+                                                                color={greycolortwo}
+                                                            />
+                                                        }
+                                                        rightIcon={
+                                                            <MaterialIcons
+                                                                name={showRoleSelectOption ? "keyboard-arrow-up" : "keyboard-arrow-down"}
+                                                                size={20}
+                                                                color={greycolortwo}
+                                                            />
+                                                        }
+                                                    />
+                                                </TouchableOpacity>
+                                                <View className="h-8" />
+                                                {showRoleSelectOption && (
+                                                    <CustomSelectRadioBox
+                                                        selected={roleSelectOption}
+                                                        setSelected={handleRoleSelectOption}
+                                                        options={["University Teaching Staff", "Non-teaching staff", "Resident"]}
+                                                    />
+                                                )}
+                                            </>
+                                        )
+                                    )}
+                                </ScrollView>
                             </>
                         )}
                     </View>
-                    <View>
+                    <View className={currentStep === 3 && "flex-1"}>
                         <View className="h-8" />
                         <CustomButton
                             backgroundColor={primarycolor}
@@ -625,7 +621,7 @@ export default function Registration() {
                     </View>
                 )}
             </View>
-            {currentStep===1 &&<View className="absolute bg-black  h-full ">
+            {currentStep === 1 && <View className="absolute bg-black  h-full ">
                 <View className="w-full absolute bottom-0" >
                     <NumericKeyboard onPress={(value) => handlePickValue(value)} />
                 </View>
@@ -640,65 +636,65 @@ const EmailVerification = ({
     setTimeLeft,
     timeLeft,
     getValue,
-    otpArray, 
+    otpArray,
     setotpArray,
     email
-   
+
 
 }) => {
-    const [showindicator,setshowindicator]=useState(false)
-    const [currentStep,setCurrentStep]=useState(1)
+    const [showindicator, setshowindicator] = useState(false)
+    const [currentStep, setCurrentStep] = useState(1)
     // Function to update OTP values
     useEffect(() => {
         // If timeLeft is 0, stop the timer
         if (timeLeft === 0) return;
-    
+
         // Set up an interval to decrease the time left every second
         const intervalId = setInterval(() => {
-          setTimeLeft(prevTime => prevTime - 1);
+            setTimeLeft(prevTime => prevTime - 1);
         }, 1000);
-    
+
         // Clear the interval when the component unmounts or timeLeft changes
         return () => clearInterval(intervalId);
-      }, [timeLeft]);
-    
-      // Convert seconds to minutes and seconds for display
-      const formatTime = (time) => {
+    }, [timeLeft]);
+
+    // Convert seconds to minutes and seconds for display
+    const formatTime = (time) => {
         const minutes = Math.floor(time / 60);
         const seconds = time % 60;
         return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
-      };
-      const handlePress=async()=>{
+    };
+    const handlePress = async () => {
         const initialTime = 5 * 60;
-       setTimeLeft(initialTime)
-       await  VerifyEmail(email,setErrorMsg,setshowindicator,setCurrentStep)
-      }
+        setTimeLeft(initialTime)
+        await VerifyEmail(email, setErrorMsg, setshowindicator, setCurrentStep)
+    }
 
     return (
         <>
-           
+
             <View>
                 <View className="flex-row items-center justify-between">
-                <Text style={[Textstyles.text_xsmall]}>
-                   Check your email for otp
-                </Text>
-                <View className="relative z-50">
-                    {timeLeft===0?
-                    <TouchableOpacity onPress={handlePress}>
-                        <Text>Resend</Text>
-                    </TouchableOpacity>:
-                     <Text style={[Textstyles.text_xsmall]} className="text-red-500">OTP Expires In:{formatTime(timeLeft)}</Text>
-                    }
-               
+                    <Text style={[Textstyles.text_xsmall]}>
+                        Check your email for otp
+                    </Text>
+                    <View className="relative z-50">
+                        {timeLeft === 0 ?
+                            <TouchableOpacity onPress={handlePress}>
+                                <Text>Resend</Text>
+                            </TouchableOpacity> :
+                            <Text style={[Textstyles.text_xsmall]} className="text-red-500">OTP Expires In:{formatTime(timeLeft)}</Text>
+                        }
+
+
+                    </View>
 
                 </View>
-                   
-                    </View>
-               <Text style={[Textstyles.text_xsmall]} className="text-red-500">
+                <Text style={[Textstyles.text_xsmall]} className="text-red-500">
                     {errorMsg}
                 </Text>
-                
-            <Pressable
+
+                <Pressable
 
                     className="flex-row justify-center items-center"
                 >

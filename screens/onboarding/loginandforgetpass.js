@@ -1,4 +1,4 @@
-import { Image, View, Text, Pressable } from "react-native";
+import { Image, View, Text, Pressable, Keyboard } from "react-native";
 import Google from "../../assets/images/google.svg";
 import Facebook from "../../assets/images/facebook.svg";
 import Apple from "../../assets/images/apple.svg";
@@ -21,10 +21,10 @@ import {
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { useState, Fragment } from "react";
+import { useState, Fragment,useCallback,useEffect } from "react";
 import { Textstyles } from "../../constants/fontsize";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useFocusEffect } from "@react-navigation/native";
 import EmailDisplay from "../../utilities/emailMask";
 import NumericKeyboard from "../modals/CustomKeyboard";
 import Animated, {
@@ -34,20 +34,25 @@ import Animated, {
 } from "react-native-reanimated";
 import { height } from "../../constants/mobileDimensions";
 import { Drawer } from "../modals/drawer";
+import { LoginUser, SendOtpandtoken, UpdatePassword, VerifyEmail, VerifyEmailuser } from "../../utilities/datafetch";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Login = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [Password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showindicator,setshowindicator]= useState('')
+  const [errorMsg,setErrorMsg]=useState('')
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   const handlesubmit = () => {
-    console.log(email, password);
-    handleToDashboard();
-  };
+    setErrorMsg('');  // Clear any previous error messages before login
+    LoginUser(email, Password, setshowindicator, setErrorMsg, handleToDashboard);
+};
+
   const handleToDashboard = () => {
     // IF first time login
     // THEN redirect to id verification
@@ -74,12 +79,14 @@ export const Login = () => {
               Enter your login details to have access to your account
             </Text>
             <View className="h-8" />
+            <Text className="text-red-500">{errorMsg}</Text>
             <CustomTextInput
               placeholder={"Email"}
               placeholderTextColor={greycolortwo}
               sideicon={
                 <Feather name="mail" size={20} color={primarycolortwo} />
               }
+              value={email}
               onChange={(text) => setEmail(text)}
             />
             <View className="h-3" />
@@ -98,6 +105,7 @@ export const Login = () => {
                   />
                 </TouchableOpacity>
               }
+              value={Password}
               onChange={(text) => setPassword(text)}
               secureTextEntry={!showPassword}
             />
@@ -117,6 +125,7 @@ export const Login = () => {
               Textname={"Login"}
               TextColor={whitecolor}
               onPress={handlesubmit}
+              Indicatorstatus={showindicator}
             />
           </View>
         </View>
@@ -175,10 +184,15 @@ export const Login = () => {
 export const Forgotpass = () => {
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
+  const [errorMsg,setErrorMsg]=useState("")
+  const [showindicator,setshowindicator]=useState(false)
   const handlesubmit = () => {
-    console.log(email);
-    navigation.navigate("otpverify");
+    setErrorMsg('')
+    VerifyEmailuser(email, setErrorMsg, setshowindicator,handlenavigate)
   };
+ const handlenavigate=()=>{
+    navigation.navigate("otpverify");
+  }
   return (
     <>
       <View className="h-full w-full px-5 py-[88px]">
@@ -196,10 +210,14 @@ export const Forgotpass = () => {
             reset your password
           </Text>
           <View className="h-8" />
+          <Text style={[Textstyles.text_xsmall]} className="text-red-500">
+            {errorMsg}
+          </Text>
           <CustomTextInput
             placeholder={"Email"}
             placeholderTextColor={greycolortwo}
             sideicon={<Feather name="mail" size={20} color={primarycolortwo} />}
+            value={email}
             onChange={(text) => setEmail(text)}
           />
 
@@ -209,6 +227,7 @@ export const Forgotpass = () => {
             Textname={"Send"}
             TextColor={whitecolor}
             onPress={handlesubmit}
+            Indicatorstatus={showindicator}
           />
         </View>
       </View>
@@ -216,12 +235,48 @@ export const Forgotpass = () => {
   );
 };
 export const Otpverify = () => {
-  const email = "yomzeew@gmail.com";
+ 
+ 
+ const [email,setEmail]=useState("")
   const [showkeyboard, setshowkeyboard] = useState(true);
   const [otpArray, setotpArray] = useState(["", "", "", ""]); // OTP array for 4 digits
-  const [errorMsg, seterrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const initialTime = 5 * 60;
+  const [timeLeft, setTimeLeft] = useState(initialTime);
+  const [showindicator,setshowindicator]=useState(false)
+  const [currentStep,setCurrentStep]=useState('')
   const navigation = useNavigation();
+  const getemail = async () => {
+    try {
+      const emailawait = await AsyncStorage.getItem('email');
+      if (emailawait) setEmail(emailawait);
+    } catch (error) {
+      setErrorMsg("Error fetching email.");
+    }
+  };
 
+  useEffect(() => {
+    getemail();
+  }, []);
+useEffect(() => {
+  // If timeLeft is 0, stop the timer
+  if (timeLeft === 0) return;
+
+  // Set up an interval to decrease the time left every second
+  const intervalId = setInterval(() => {
+      setTimeLeft(prevTime => prevTime - 1);
+  }, 1000);
+
+  // Clear the interval when the component unmounts or timeLeft changes
+  return () => clearInterval(intervalId);
+}, [timeLeft]);
+
+// Convert seconds to minutes and seconds for display
+const formatTime = (time) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+  return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+};
   const handleshowkeys = () => {
     setshowkeyboard((prevState) => !prevState)
     translateY.value = showkeyboard ? withSpring(0) : withSpring(300);
@@ -249,9 +304,9 @@ export const Otpverify = () => {
     } else if (value === "*") {
       // Handle OTP submission when * is pressed
       if (otpArray.some((digit) => digit === "")) {
-        seterrorMsg("Incomplete OTP"); // Show error if OTP is incomplete
+        setErrorMsg("Incomplete OTP"); // Show error if OTP is incomplete
       } else {
-        seterrorMsg(""); // Clear the error message
+        setErrorMsg(""); // Clear the error message
         // Handle OTP submission logic here
         console.log("OTP Submitted:", otpArray.join("")); // Example submission action
       }
@@ -268,10 +323,27 @@ export const Otpverify = () => {
       });
     }
   };
-  const handlesubmit = () => {
-    console.log(otpArray);
+  const handlenavigate=()=>{
     navigation.navigate("confirmpass");
+  }
+  const handlesubmit = async() => {
+    if (timeLeft < 1) {
+      setErrorMsg('Otp TimeOut')
+      return
+  }
+  const otp = otpArray.join("")
+  console.log(otp)
+  if(!otp){
+    return
+  }
+  await SendOtpandtoken(otp, setErrorMsg, setshowindicator, handlenavigate);
   };
+  const handlePress = async () => {
+    const initialTime = 5 * 60;
+    setTimeLeft(initialTime)
+    await VerifyEmail(email, setErrorMsg, setshowindicator, setCurrentStep,()=>{null})
+}
+
 
   return (
     <>
@@ -294,9 +366,23 @@ export const Otpverify = () => {
             <EmailDisplay email={email} />
           </Text>
           <View className="h-8" />
-          <Text style={[Textstyles.text_xsmall]} className="text-red-300">
+          <View className="flex-row items-center justify-between">
+          <Text style={[Textstyles.text_xsmall]} className="text-red-500">
             {errorMsg}
           </Text>
+                    <View className="relative z-50">
+                        {timeLeft === 0 ?
+                            <TouchableOpacity onPress={handlePress}>
+                                <Text>Resend</Text>
+                            </TouchableOpacity> :
+                            <Text style={[Textstyles.text_xsmall]} className="text-red-500">OTP Expires In:{formatTime(timeLeft)}</Text>
+                        }
+
+
+                    </View>
+
+                </View>
+          
           <Pressable
             onPress={handleshowkeys}
             className="flex-row justify-center items-center"
@@ -314,7 +400,7 @@ export const Otpverify = () => {
           <View className="h-3" />
           <Text style={[Textstyles.text_xsmall]} className="text-center">
             Didn’t receive code?{" "}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handlePress}>
               <Text style={[{ color: primarycolor }]}>Resend</Text>
             </TouchableOpacity>
           </Text>
@@ -325,7 +411,7 @@ export const Otpverify = () => {
             TextColor={whitecolor}
             onPress={() => {
               if (otpArray.some((digit) => digit === "")) {
-                seterrorMsg("Incomplete OTP");
+                setErrorMsg("Incomplete OTP");
               } else {
                 handlesubmit();
                 // Handle OTP submit logic here
@@ -338,11 +424,26 @@ export const Otpverify = () => {
   );
 };
 export const ConfirmPassword = () => {
-  const [password, setPassword] = useState("");
+  const [Password, setPassword] = useState("");
+  const [email,setEmail]=useState('')
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigation = useNavigation("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showindicator,setshowindicator]=useState(false)
+  const [errorMsg,setErrorMsg]=useState('')
+  const getemail = async () => {
+    try {
+      const emailawait = await AsyncStorage.getItem('email');
+      if (emailawait) setEmail(emailawait);
+    } catch (error) {
+      setErrorMsg("Error fetching email.");
+    }
+  };
+
+  useEffect(() => {
+    getemail();
+  }, []);
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -353,12 +454,21 @@ export const ConfirmPassword = () => {
   const handleToSignup = () => {
     navigation.navigate("signup");
   };
-  const handlesubmit = () => {
-    console.log(password, confirmPassword);
-    setShowDrawer(true);
-    translateY.value = setShowDrawer ? withSpring(300) : withSpring(600);
+  const handlesubmit = async() => {
+    Keyboard.dismiss()
+    console.log(Password, confirmPassword);
+    if(Password!==confirmPassword){
+      setErrorMsg('Password not match')
+      return
+    }
+    if(!Password){
+      setErrorMsg('Empty Password')
+      return
+    }
+    await UpdatePassword(email,Password,setErrorMsg, setshowindicator,setShowDrawer)
+    translateY.value = setShowDrawer ? withSpring(0) : withSpring(300);
   };
-  const translateY = useSharedValue(600);
+  const translateY = useSharedValue(300);
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
   }));
@@ -398,6 +508,9 @@ export const ConfirmPassword = () => {
               from the old password
             </Text>
             <View className="h-8" />
+            <Text style={[Textstyles.text_xsmall]} className="text-red-500">
+            {errorMsg}
+          </Text>
             <CustomTextInput
               placeholder={"Password"}
               placeholderTextColor={greycolortwo}
@@ -413,6 +526,7 @@ export const ConfirmPassword = () => {
                   />
                 </TouchableOpacity>
               }
+              value={Password}
               onChange={(text) => setPassword(text)}
               secureTextEntry={!showPassword}
             />
@@ -445,6 +559,7 @@ export const ConfirmPassword = () => {
               Textname={"Send"}
               TextColor={whitecolor}
               onPress={handlesubmit}
+              Indicatorstatus={showindicator}
             />
           </View>
         </View>
